@@ -1,0 +1,16 @@
+<launch>
+
+	<!-- TELLO DRIVER -->
+	<!-- <include file="$(find tello_driver)/launch/tello_node.launch"/> -->
+
+	<!-- COMMON_CAMERA_APPLICATION {CAMERA PREVIEW} -->
+	<node	pkg="common_camera_application" 
+		name="camera_preview" 
+		type="camera_preview.py"> 
+		<!-- output="screen"> -->
+		
+		<remap from="/cv_camera/image_raw" to="/tello/image_raw/h264"/>
+		<remap from="/cv_camera/camera_info" to="/tello/camera/camera_info"/>
+	</node>
+
+</launch>
