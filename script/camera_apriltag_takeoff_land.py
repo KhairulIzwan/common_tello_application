@@ -21,7 +21,7 @@ import apriltag
 
 # import the necessary ROS packages
 from std_msgs.msg import String
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image, CompressedImage
 
 from cv_bridge import CvBridge
 from cv_bridge import CvBridgeError
@@ -47,17 +47,21 @@ class CameraAprilTag:
 		self.takeoff = Empty()
 		self.land = Empty()
 		
-		self.stateTakeoff = True
-		self.stateLand = False
+#		self.stateTakeoff = True
+#		self.stateLand = False
 
 		rospy.logwarn("AprilTag Detection Node [ONLINE]...")
 
 		# rospy shutdown
 		rospy.on_shutdown(self.cbShutdown)
 
-		# Subscribe to Image msg
-		self.telloImage_topic = "/tello/image_raw_resized"
-		self.telloImage_sub = rospy.Subscriber(self.telloImage_topic, Image, self.cbImage)
+		# Subscribe to CompressedImage msg
+		self.telloImage_topic = "/tello/image_raw/compressed"
+		self.telloImage_sub = rospy.Subscriber(
+						self.telloImage_topic, 
+						CompressedImage, 
+						self.cbImage
+						)
 
 		# Subscribe to TelloStatus msg
 		self.telloStatus_topic = "/tello/status"
@@ -90,14 +94,15 @@ class CameraAprilTag:
 
 		try:
 			# direct conversion to cv2
-			self.cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
-
+			self.cv_image = self.bridge.compressed_imgmsg_to_cv2(
+								msg, 
+								"bgr8"
+								)
 		except CvBridgeError as e:
 			print(e)
 
 		if self.cv_image is not None:
 			self.image_received = True
-			self.cv_image_clone = self.cv_image.copy()
 		else:
 			self.image_received = False
 
@@ -368,21 +373,16 @@ class CameraAprilTag:
 			
 			cv2.circle(self.cv_image, (int(result[0][6][0]), int(result[0][6][1])), 5, (255, 0, 0), 2)
 			
-			if result[0][1] == 0 and self.stateLand == True:	# ID=0
+			if result[0][1] == 0 and self.is_flying == True:	# ID=0
 				rospy.loginfo("Landing...")
 				self.telloLand_pub.publish(self.land)
-				self.stateTakeoff = True
-				self.stateLand = False
-			elif result[0][1] == 1 and self.stateTakeoff == True:	# ID=1
+#				self.stateTakeoff = True
+#				self.stateLand = False
+			elif result[0][1] == 1 and self.is_flying == False:	# ID=1
 				rospy.loginfo("Takeoff...")
 				self.telloTakeoff_pub.publish(self.takeoff)
-				self.stateTakeoff = False
-				self.stateLand = True
-			else:
-				if self.stateLand == False:
-					rospy.loginfo("Takeoff First!...")
-				elif self.stateTakeoff == False:
-					rospy.loginfo("Landing First!...")
+#				self.stateTakeoff = False
+#				self.stateLand = True
 		else:
 			pass
 
@@ -396,9 +396,9 @@ class CameraAprilTag:
 	def cbPreview(self):
 
 		if self.image_received:
-			self.cbInfo()
+#			self.cbInfo()
 			self.cbAprilTag()
-			self.cbShowImage()
+#			self.cbShowImage()
 		else:
 			rospy.logerr("No images recieved")
 

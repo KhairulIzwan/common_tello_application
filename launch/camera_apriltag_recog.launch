@@ -3,17 +3,17 @@
 	<!-- TELLO DRIVER -->
 	<!-- <include file="$(find tello_driver)/launch/tello_node.launch"/> -->
 
-	<!-- COMMON_TELLO_APPLICATION {CAMERA CONVERTER} -->
+	<!-- COMMON_TELLO_APPLICATION {CAMERA RESIZE} -->
 	<node	pkg="common_tello_application" 
 		name="camera_converter" 
 		type="camera_converter.py"> 
 		<!-- output="screen"> -->
 	</node>
 
-	<!-- COMMON_TELLO_APPLICATION {CAMERA PREVIEW} -->
+	<!-- COMMON_TELLO_APPLICATION {CAMERA APRILTAG} -->
 	<node	pkg="common_tello_application" 
-		name="camera_preview" 
-		type="camera_preview.py"> 
+		name="camera_apriltag" 
+		type="camera_apriltag.py"> 
 		<!-- output="screen"> -->
 	</node>
 

@@ -51,22 +51,34 @@ class CameraPreview:
 
 		# Subscribe to Image msg
 		self.telloImage_topic = "/tello/image_raw_resized"
-		self.telloImage_sub = rospy.Subscriber(self.telloImage_topic, Image, self.cbImage)
+		self.telloImage_sub = rospy.Subscriber(
+					self.telloImage_topic, 
+					Image, 
+					self.cbImage
+					)
 
 		# Subscribe to TelloStatus msg
 		self.telloStatus_topic = "/tello/status"
-		self.telloStatus_sub = rospy.Subscriber(self.telloStatus_topic, TelloStatus, 
-			self.cbTelloStatus)
+		self.telloStatus_sub = rospy.Subscriber(
+					self.telloStatus_topic, 
+					TelloStatus, 
+					self.cbTelloStatus)
 			
 		# Subscribe to Odometry msg
 		self.telloOdom_topic = "/tello/odom"
-		self.telloOdom_sub = rospy.Subscriber(self.telloOdom_topic, Odometry, 
-			self.cbTelloOdometry)
+		self.telloOdom_sub = rospy.Subscriber(
+					self.telloOdom_topic, 
+					Odometry, 
+					self.cbTelloOdometry
+					)
 
 		# Subscribe to PoseWithCovariance msg
 		self.telloIMU_topic = "/tello/imu"
-		self.telloIMU_sub = rospy.Subscriber(self.telloIMU_topic, Imu, 
-			self.cbTelloIMU)
+		self.telloIMU_sub = rospy.Subscriber(
+					self.telloIMU_topic, 
+					Imu, 
+					self.cbTelloIMU
+					)
 			
 		# Allow up to one second to connection
 		rospy.sleep(1)

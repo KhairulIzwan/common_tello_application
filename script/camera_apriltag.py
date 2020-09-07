@@ -53,22 +53,34 @@ class CameraAprilTag:
 
 		# Subscribe to Image msg
 		self.telloImage_topic = "/tello/image_raw_resized"
-		self.telloImage_sub = rospy.Subscriber(self.telloImage_topic, Image, self.cbImage)
+		self.telloImage_sub = rospy.Subscriber(
+				self.telloImage_topic, 
+				Image, 
+				self.cbImage
+				)
 
 		# Subscribe to TelloStatus msg
 		self.telloStatus_topic = "/tello/status"
-		self.telloStatus_sub = rospy.Subscriber(self.telloStatus_topic, TelloStatus, 
-			self.cbTelloStatus)
+		self.telloStatus_sub = rospy.Subscriber(
+				self.telloStatus_topic, 
+				TelloStatus, 
+				self.cbTelloStatus
+				)
 			
 		# Subscribe to Odometry msg
 		self.telloOdom_topic = "/tello/odom"
-		self.telloOdom_sub = rospy.Subscriber(self.telloOdom_topic, Odometry, 
-			self.cbTelloOdometry)
+		self.telloOdom_sub = rospy.Subscriber(
+				self.telloOdom_topic, 
+				Odometry, 
+				self.cbTelloOdometry
+				)
 
 		# Subscribe to PoseWithCovariance msg
 		self.telloIMU_topic = "/tello/imu"
-		self.telloIMU_sub = rospy.Subscriber(self.telloIMU_topic, Imu, 
-			self.cbTelloIMU)
+		self.telloIMU_sub = rospy.Subscriber(
+				self.telloIMU_topic, Imu, 
+				self.cbTelloIMU
+				)
 			
 		# Allow up to one second to connection
 		rospy.sleep(1)
@@ -85,7 +97,7 @@ class CameraAprilTag:
 
 		if self.cv_image is not None:
 			self.image_received = True
-			self.cv_image_clone = self.cv_image.copy()
+#			self.cv_image_clone = self.cv_image.copy()
 		else:
 			self.image_received = False
 
@@ -351,60 +363,62 @@ class CameraAprilTag:
 		cv_image_gray = cv2.cvtColor(self.cv_image, cv2.COLOR_BGR2GRAY)
 		
 		result = self.detector.detect(cv_image_gray)
-
-		if len(result) != 0:	
-
-			rospy.loginfo("Detect ID: %d" % (result[0][1]))
-			
-			cv2.putText(
-				self.cv_image, 
-				"ID: %d" % (result[0][1]), 
-				(int(result[0][6][0]) - 20, int(result[0][6][1]) - 20), 
-				fontFace, 
-				fontScale, 
-				color, 
-				thickness, 
-				lineType, 
-				bottomLeftOrigin)
-			
-			cv2.line(
-				self.cv_image, 
-				(int(result[0][7][0][0]), int(result[0][7][0][1])), 
-				(int(result[0][7][1][0]), int(result[0][7][1][1])), 
-				(0, 0, 255), 
-				3)
-				
-			cv2.line(
-				self.cv_image, 
-				(int(result[0][7][0][0]), int(result[0][7][0][1])), 
-				(int(result[0][7][3][0]), int(result[0][7][3][1])), 
-				(0, 255, 0), 
-				3)
-				
-			cv2.line(
-				self.cv_image, 
-				(int(result[0][7][1][0]), int(result[0][7][1][1])), 
-				(int(result[0][7][2][0]), int(result[0][7][2][1])), 
-				(255, 0, 0), 
-				3)
-				
-			cv2.line(
-				self.cv_image, 
-				(int(result[0][7][2][0]), int(result[0][7][2][1])), 
-				(int(result[0][7][3][0]), int(result[0][7][3][1])), 
-				(255, 0, 0), 
-				3)
-			
-			cv2.circle(
-				self.cv_image, 
-				(int(result[0][6][0]), int(result[0][6][1])), 
-				5, 
-				(255, 0, 0), 
-				2)
 		
-#			print("Corners: {}".format(result[0][7]))
-#			print("Corners: {}".format(result[0][7][0]))
-#			print("Corners: {}".format(result[0][7][0][0]))
+#		rospy.loginfo(len(result))
+
+		if len(result) != 0:
+			for i in range(len(result)):
+				rospy.loginfo("Detect ID: %d" % (result[i][1]))
+
+				cv2.putText(
+					self.cv_image, 
+					"ID: %d" % (result[i][1]), 
+					(int(result[i][6][0]) - 20, int(result[i][6][1]) - 20), 
+					fontFace, 
+					fontScale, 
+					color, 
+					thickness, 
+					lineType, 
+					bottomLeftOrigin)
+
+				cv2.line(
+					self.cv_image, 
+					(int(result[i][7][0][0]), int(result[i][7][0][1])), 
+					(int(result[i][7][1][0]), int(result[i][7][1][1])), 
+					(0, 0, 255), 
+					3)
+
+				cv2.line(
+					self.cv_image, 
+					(int(result[i][7][0][0]), int(result[i][7][0][1])), 
+					(int(result[i][7][3][0]), int(result[i][7][3][1])), 
+					(0, 255, 0), 
+					3)
+
+				cv2.line(
+					self.cv_image, 
+					(int(result[i][7][1][0]), int(result[i][7][1][1])), 
+					(int(result[i][7][2][0]), int(result[i][7][2][1])), 
+					(255, 0, 0), 
+					3)
+
+				cv2.line(
+					self.cv_image, 
+					(int(result[i][7][2][0]), int(result[i][7][2][1])), 
+					(int(result[i][7][3][0]), int(result[i][7][3][1])), 
+					(255, 0, 0), 
+					3)
+
+				cv2.circle(
+					self.cv_image, 
+					(int(result[i][6][0]), int(result[i][6][1])), 
+					5, 
+					(255, 0, 0), 
+					2)
+		
+##			print("Corners: {}".format(result[0][7]))
+##			print("Corners: {}".format(result[0][7][0]))
+##			print("Corners: {}".format(result[0][7][0][0]))
 		else:
 			pass
 		
@@ -418,7 +432,7 @@ class CameraAprilTag:
 	def cbPreview(self):
 
 		if self.image_received:
-			self.cbInfo()
+#			self.cbInfo()
 			self.cbAprilTag()
 			self.cbShowImage()
 		else:
