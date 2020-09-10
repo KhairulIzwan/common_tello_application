@@ -37,7 +37,7 @@ from nav_msgs.msg import Odometry
 
 from sensor_msgs.msg import Imu
 
-from common_face_application.msg import objCenter as objCoord
+from common_tello_application.msg import objCenter as objCoord
 
 import rospy
 

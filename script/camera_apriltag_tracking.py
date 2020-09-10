@@ -31,9 +31,10 @@ from nav_msgs.msg import Odometry
 
 from sensor_msgs.msg import Imu
 
-from common_face_application.msg import objCenter as objCoord
+from common_tello_application.msg import objCenter as objCoord
 
-from common_pid_controller.pid import PID
+from common_tello_application.pid import PID
+from common_tello_application.makesimpleprofile import map as mapped
 
 from geometry_msgs.msg import Twist
 
@@ -571,30 +572,6 @@ class CameraAprilTag:
 
 		return error, output
 
-	def fnConstrain(self, input, low, high):
-		if input < low:
-			input = low
-		elif input > high:
-			input = high
-		else:
-			input = input
-
-		return input
-
-	def checkLinearLimitVelocity(self, vel):
-
-		vel = self.fnConstrain(vel, -self.MAX_LIN_VEL, self.MAX_LIN_VEL)
-		return vel
-
-	def checkAngularLimitVelocity(self, vel):
-
-		vel = self.fnConstrain(vel, -self.MAX_ANG_VEL, self.MAX_ANG_VEL)
-		return vel
-
-	def map(self, x, in_min, in_max, out_min, out_max):
-		
-		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-
 	def cbCallErr(self):
 		self.cbAprilTag()
 
@@ -604,8 +581,8 @@ class CameraAprilTag:
 #		elif self.panOut < 0:	# negative error
 #			self.telloCmdVel.linear.x = self.map(self.panOut, 0, self.panOut, 0, self.MAX_LIN_VEL)
 
-		panSpeed = self.map(abs(self.panOut), 0, self.imgWidth // 2, 0, self.MAX_LIN_VEL)
-		tiltSpeed = self.map(abs(self.tiltOut), 0, self.imgHeight // 2, 0, self.MAX_LIN_VEL)
+		panSpeed = mapped(abs(self.panOut), 0, self.imgWidth // 2, 0, self.MAX_LIN_VEL)
+		tiltSpeed = mapped(abs(self.tiltOut), 0, self.imgHeight // 2, 0, self.MAX_LIN_VEL)
 
 		# print an error
 #		rospy.loginfo([self.panErr, self.panOut, panSpeed])
