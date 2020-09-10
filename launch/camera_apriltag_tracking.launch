@@ -8,12 +8,19 @@
 	<!-- 	name="camera_converter" -->
 	<!-- 	type="camera_converter.py"> -->
 		<!-- output="screen"> -->
-	<!-- </node> -->
+	<!-- </node>
 
 	<!-- COMMON_TELLO_APPLICATION {CAMERA APRILTAG_CENTER} -->
 	<node	pkg="common_tello_application"
 		name="camera_apriltag_center"
 		type="camera_apriltag_center.py">
+		<!--output="screen"> -->
+	</node>
+	
+	<!-- COMMON_TELLO_APPLICATION {CAMERA APRILTAG_TRACKING} -->
+	<node	pkg="common_tello_application"
+		name="camera_apriltag_tracking"
+		type="camera_apriltag_tracking.py">
 		<!--output="screen"> -->
 	</node>
 

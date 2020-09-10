@@ -10,14 +10,15 @@ common_tello_application
 │   ├── camera_apriltag_center.launch
 │   ├── camera_apriltag_recog.launch
 │   ├── camera_apriltag_takeoff_land.launch
+│   ├── camera_apriltag_tracking.launch
 │   └── camera_preview.launch
 ├── package.xml
 ├── README.md
 ├── script
 │   ├── camera_apriltag_center.py [6]
 │   ├── camera_apriltag.py [5] 
-│   ├── camera_apriltag_takeoff_land.py
-│   ├── camera_apriltag_tracking.py
+│   ├── camera_apriltag_takeoff_land.py [7]
+│   ├── camera_apriltag_tracking.py [8]
 │   ├── camera_converter.py [3] 
 │   ├── camera_preview.py [4] 
 │   ├── camera_resize.py [2] 
@@ -68,9 +69,6 @@ Preview an image stream from tello
 2. rosrun common_tello_application camera_converter.py
 3. rosrun common_tello_application camera_preview.py
 
-**or**
-2. roslaunch common_tello_application camera_preview.launch
-
 ## [5] camera_apriltag.py
 Detect and recognize apriltag
 
@@ -78,11 +76,22 @@ Detect and recognize apriltag
 2. rosrun common_tello_application camera_converter.py
 3. rosrun common_tello_application camera_apriltag.py
 
-**or**
-2. roslaunch common_tello_application camera_apriltag_recog.launch
-
 ## [6] camera_apriltag_center.py
 Detect, recognize apriltag and publish the center
 
 1. roslaunch tello_driver tello_node.launch
 2. rosrun common_tello_application camera_apriltag_center.py
+
+## [7] camera_apriltag_takeoff_land.py
+Autonomously takeoff and land based on apriltag 0: Land, 1: Takeoff
+
+1. roslaunch tello_driver tello_node.launch
+2. rosrun common_tello_application camera_apriltag_takeoff_land.py
+
+## [8] camera_apriltag_tracking.py
+Tracking the detected apriltag; keep the apriltag on center of image.
+Applying PID controller.
+
+1. roslaunch tello_driver tello_node.launch
+2. rosrun common_tello_application camera_apriltag_center.py
+3. rosrun common_tello_application camera_apriltag_tracking.py

@@ -417,10 +417,7 @@ class CameraAprilTag:
 
 		if len(result) != 0:
 #			for i in range(len(result)):
-#				rospy.loginfo("Detect ID: %d" % (result[i][1]))
-
-			self.objectCoord.centerX = int(result[0][6][0])
-			self.objectCoord.centerY = int(result[0][6][1])
+#			rospy.loginfo("Detect ID: %d" % (result[0][1]))
 
 			cv2.putText(
 				self.cv_image, 
@@ -471,6 +468,13 @@ class CameraAprilTag:
 ##			print("Corners: {}".format(result[0][7]))
 ##			print("Corners: {}".format(result[0][7][0]))
 ##			print("Corners: {}".format(result[0][7][0][0]))
+
+			if result[0][1] == 0 or result[0][1] == 1:
+				self.objectCoord.centerX = self.imgWidth // 2
+				self.objectCoord.centerY = self.imgHeight // 2
+			else:
+				self.objectCoord.centerX = int(result[0][6][0])
+				self.objectCoord.centerY = int(result[0][6][1])
 		else:
 			self.objectCoord.centerX = self.imgWidth // 2
 			self.objectCoord.centerY = self.imgHeight // 2
@@ -492,7 +496,7 @@ class CameraAprilTag:
 	def cbPreview(self):
 
 		if self.image_received:
-			self.cbInfo()
+#			self.cbInfo()
 			self.cbAprilTag()
 			self.cbShowImage()
 		else:

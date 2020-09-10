@@ -1,18 +1,12 @@
 #!/usr/bin/env python
 
 ################################################################################
-## {Description}: Recognizing Apriltag (Detecting Single AprilTag Only!)
+## {Description}: 
 ################################################################################
 ## Author: Khairul Izwan Bin Kamsani
 ## Version: {1}.{0}.{0}
 ## Email: {wansnap@gmail.com}
 ################################################################################
-
-"""
-Image published (CompressedImage) from tello originally size of 960x720 pixels
-We will try to resize it using imutils.resize (with aspect ratio) to width = 320
-and then republish it as Image
-"""
 
 # import the necessary Python packages
 from __future__ import print_function
@@ -55,15 +49,18 @@ class CameraAprilTag:
 		self.panErrval = Float32()
 		self.telloCmdVel = Twist()
 
+		self.MAX_LIN_VEL = 2.00
+		self.MAX_ANG_VEL = 2.00
+
 		# set PID values for panning
-		self.panP = 1
+		self.panP = 0.5
 		self.panI = 0
 		self.panD = 0
 
 		# set PID values for tilting
-		self.tiltP = 0.1
-		self.tiltI = 0.0008
-		self.tiltD = 0.01
+		self.tiltP = 1
+		self.tiltI = 0
+		self.tiltD = 0
 
 		# create a PID and initialize it
 		self.panPID = PID(self.panP, self.panI, self.panD)
@@ -574,55 +571,116 @@ class CameraAprilTag:
 
 		return error, output
 
+	def fnConstrain(self, input, low, high):
+		if input < low:
+			input = low
+		elif input > high:
+			input = high
+		else:
+			input = input
+
+		return input
+
+	def checkLinearLimitVelocity(self, vel):
+
+		vel = self.fnConstrain(vel, -self.MAX_LIN_VEL, self.MAX_LIN_VEL)
+		return vel
+
+	def checkAngularLimitVelocity(self, vel):
+
+		vel = self.fnConstrain(vel, -self.MAX_ANG_VEL, self.MAX_ANG_VEL)
+		return vel
+
+	def map(self, x, in_min, in_max, out_min, out_max):
+		
+		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+
 	def cbCallErr(self):
 		self.cbAprilTag()
-#		rospy.loginfo([self.panErr, self.panOut])
 
-		if self.panErr > 0:
-			self.telloCmdVel.linear.x = -0.5
-			self.telloCmdVel.linear.y = 0.0
-			self.telloCmdVel.linear.z = 0.0
+#		# set self.telloCmdVel.linear.x
+#		if self.panOut > 0:	# positive error
+#			self.telloCmdVel.linear.x = self.map(self.panOut, 0, self.panOut, 0, -self.MAX_LIN_VEL)
+#		elif self.panOut < 0:	# negative error
+#			self.telloCmdVel.linear.x = self.map(self.panOut, 0, self.panOut, 0, self.MAX_LIN_VEL)
+
+		panSpeed = self.map(abs(self.panOut), 0, self.imgWidth // 2, 0, self.MAX_LIN_VEL)
+		tiltSpeed = self.map(abs(self.tiltOut), 0, self.imgHeight // 2, 0, self.MAX_LIN_VEL)
+
+		# print an error
+#		rospy.loginfo([self.panErr, self.panOut, panSpeed])
+#		rospy.loginfo([self.tiltErr, self.tiltOut, tiltSpeed])
 		
-			self.telloCmdVel.angular.x = 0.0
-			self.telloCmdVel.angular.y = 0.0
-			self.telloCmdVel.angular.z = 0.0
-
-		elif self.panErr < 0:
-			self.telloCmdVel.linear.x = 0.5
-			self.telloCmdVel.linear.y = 0.0
-			self.telloCmdVel.linear.z = 0.0
+#		# set self.telloCmdVel.linear.z
+#		if self.tiltOut > 0:	# positive error
+#			# TODO:
+#		elif self.tiltOut < 0:	# negative error
+#			# TODO
 		
-			self.telloCmdVel.angular.x = 0.0
-			self.telloCmdVel.angular.y = 0.0
-			self.telloCmdVel.angular.z = 0.0
-
-		elif self.tiltErr > 0:
-			self.telloCmdVel.linear.x = 0.0
-			self.telloCmdVel.linear.y = 0.0
-			self.telloCmdVel.linear.z = 0.5
-		
-			self.telloCmdVel.angular.x = 0.0
-			self.telloCmdVel.angular.y = 0.0
-			self.telloCmdVel.angular.z = 0.0
-
-		elif self.tiltErr < 0:
-			self.telloCmdVel.linear.x = 0.0
-			self.telloCmdVel.linear.y = 0.0
-			self.telloCmdVel.linear.z = -0.5
-		
-			self.telloCmdVel.angular.x = 0.0
-			self.telloCmdVel.angular.y = 0.0
-			self.telloCmdVel.angular.z = 0.0
-
+		if self.panOut < 0:
+			self.telloCmdVel.linear.x = panSpeed
+		elif self.panOut > 0:
+			self.telloCmdVel.linear.x = -panSpeed
 		else:
-			self.telloCmdVel.linear.x = 0.0
-			self.telloCmdVel.linear.y = 0.0
-			self.telloCmdVel.linear.z = 0.0
-		
-			self.telloCmdVel.angular.x = 0.0
-			self.telloCmdVel.angular.y = 0.0
-			self.telloCmdVel.angular.z = 0.0
+			self.telloCmdVel.linear.x = 0
+			
+		if self.tiltOut > 0:
+			self.telloCmdVel.linear.z = tiltSpeed
+		elif self.tiltOut < 0:
+			self.telloCmdVel.linear.z = -tiltSpeed
+		else:
+			self.telloCmdVel.linear.z = 0
 
+#		if self.panErr > 0:
+#			self.telloCmdVel.linear.x = -0.5
+#			self.telloCmdVel.linear.y = 0.0
+#			self.telloCmdVel.linear.z = 0.0
+#		
+#			self.telloCmdVel.angular.x = 0.0
+#			self.telloCmdVel.angular.y = 0.0
+#			self.telloCmdVel.angular.z = 0.0
+
+#		elif self.panErr < 0:
+#			self.telloCmdVel.linear.x = 0.5
+#			self.telloCmdVel.linear.y = 0.0
+#			self.telloCmdVel.linear.z = 0.0
+#		
+#			self.telloCmdVel.angular.x = 0.0
+#			self.telloCmdVel.angular.y = 0.0
+#			self.telloCmdVel.angular.z = 0.0
+
+#		elif self.tiltErr > 0:
+#			self.telloCmdVel.linear.x = 0.0
+#			self.telloCmdVel.linear.y = 0.0
+#			self.telloCmdVel.linear.z = 0.5
+#		
+#			self.telloCmdVel.angular.x = 0.0
+#			self.telloCmdVel.angular.y = 0.0
+#			self.telloCmdVel.angular.z = 0.0
+
+#		elif self.tiltErr < 0:
+#			self.telloCmdVel.linear.x = 0.0
+#			self.telloCmdVel.linear.y = 0.0
+#			self.telloCmdVel.linear.z = -0.5
+#		
+#			self.telloCmdVel.angular.x = 0.0
+#			self.telloCmdVel.angular.y = 0.0
+#			self.telloCmdVel.angular.z = 0.0
+
+#		else:
+#			self.telloCmdVel.linear.x = 0.0
+#			self.telloCmdVel.linear.y = 0.0
+#			self.telloCmdVel.linear.z = 0.0
+#		
+#			self.telloCmdVel.angular.x = 0.0
+#			self.telloCmdVel.angular.y = 0.0
+#			self.telloCmdVel.angular.z = 0.0
+
+		self.telloCmdVel.linear.y = 0.0
+	
+		self.telloCmdVel.angular.x = 0.0
+		self.telloCmdVel.angular.y = 0.0
+		self.telloCmdVel.angular.z = 0.0
 		self.telloCmdVel_pub.publish(self.telloCmdVel)
 
 
@@ -638,7 +696,7 @@ if __name__ == '__main__':
 	rospy.init_node('camera_apriltag_tracking', anonymous=False)
 	camera = CameraAprilTag()
 	
-	r = rospy.Rate(10)
+#	r = rospy.Rate(10)
 	
 	# Camera preview
 	while not rospy.is_shutdown():

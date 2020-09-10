@@ -1,0 +1,27 @@
+<launch>
+
+	<!-- TELLO DRIVER -->
+	<!-- <include file="$(find tello_driver)/launch/tello_node.launch"/> -->
+
+	<!-- COMMON_TELLO_APPLICATION {CAMERA RESIZE} -->
+	<!-- <node	pkg="common_tello_application" -->
+	<!-- 	name="camera_converter" -->
+	<!-- 	type="camera_converter.py"> -->
+		<!-- output="screen"> -->
+	<!-- </node> -->
+
+	<!-- COMMON_TELLO_APPLICATION {CAMERA APRILTAG_TAKEOFF_LAND} -->
+	<node	pkg="common_tello_application" 
+		name="camera_apriltag_takeoff_land" 
+		type="camera_apriltag_takeoff_land.py"> 
+		<!-- output="screen"> -->
+	</node>
+
+	<!-- COMMON_TELLO_APPLICATION {CAMERA APRILTAG_CENTER} -->
+	<node	pkg="common_tello_application" 
+		name="camera_apriltag_center" 
+		type="camera_apriltag_center.py"> 
+		<!-- output="screen"> -->
+	</node>
+
+</launch>
