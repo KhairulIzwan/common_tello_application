@@ -43,10 +43,10 @@ class CameraConverter:
 		rospy.on_shutdown(self.cbShutdown)
 
 		# Subscribe to CompressedImage msg
-		self.image_topic = "/tello/image_raw/compressed"
+		self.image_topic = "/tello/image_raw"
 		self.image_sub = rospy.Subscriber(
 						self.image_topic, 
-						CompressedImage, 
+						Image, 
 						self.cbImage
 						)
 
@@ -74,7 +74,11 @@ class CameraConverter:
 
 		try:
 			# direct conversion to cv2
-			self.cv_image = self.bridge.compressed_imgmsg_to_cv2(
+#			self.cv_image = self.bridge.compressed_imgmsg_to_cv2(
+#								msg, 
+#								"bgr8"
+#								)
+			self.cv_image = self.bridge.imgmsg_to_cv2(
 								msg, 
 								"bgr8"
 								)
