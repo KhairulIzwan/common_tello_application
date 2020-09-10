@@ -74,11 +74,7 @@ class CameraConverter:
 
 		try:
 			# direct conversion to cv2
-#			self.cv_image = self.bridge.compressed_imgmsg_to_cv2(
-#								msg, 
-#								"bgr8"
-#								)
-			self.cv_image = self.bridge.imgmsg_to_cv2(
+			self.cv_image = self.bridge.compressed_imgmsg_to_cv2(
 								msg, 
 								"bgr8"
 								)
