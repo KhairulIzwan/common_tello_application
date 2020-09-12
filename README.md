@@ -36,7 +36,7 @@ common_tello_application
 ```
 
 # About
-A project to understand and controlling the **tello**
+A project to understand and controlling the **tello** with **ROS** and **Python**
 
 # Required Packages/Library
 1. Tello Driver:
@@ -101,5 +101,6 @@ Tracking the detected apriltag; keep the apriltag on center of image.
 Applying PID controller.
 
 1. roslaunch tello_driver tello_node.launch
-2. rosrun common_tello_application camera_apriltag_center.py
-3. rosrun common_tello_application camera_apriltag_tracking.py
+2. rosrun common_tello_application camera_apriltag_takeoff_land.py
+3. rosrun common_tello_application camera_apriltag_center.py
+4. rosrun common_tello_application camera_apriltag_tracking.py
