@@ -1,12 +1,18 @@
 #!/usr/bin/env python
 
 ################################################################################
-## {Description}: 
+## {Description}: Recognizing Apriltag (Detecting Single AprilTag Only!)
 ################################################################################
 ## Author: Khairul Izwan Bin Kamsani
 ## Version: {1}.{0}.{0}
 ## Email: {wansnap@gmail.com}
 ################################################################################
+
+"""
+Image published (CompressedImage) from tello originally size of 960x720 pixels
+We will try to resize it using imutils.resize (with aspect ratio) to width = 320
+and then republish it as Image
+"""
 
 # import the necessary Python packages
 from __future__ import print_function
@@ -33,61 +39,33 @@ from sensor_msgs.msg import Imu
 
 from common_tello_application.msg import objCenter as objCoord
 
-from common_tello_application.pid import PID
-from common_tello_application.makesimpleprofile import map as mapped
-
-from geometry_msgs.msg import Twist
-
 import rospy
 
 from common_tello_application.msg import apriltagN as apriltagList
+from common_tello_application.msg import apriltagC as apriltagCenter
+from common_tello_application.msg import apriltagH as apriltagHomography
+from common_tello_application.msg import apriltagCorner
+
 from common_tello_application.msg import arrayHomo as apriltagHomographyMat
+from common_tello_application.msg import arrayCorner as apriltagCornerMat
 
 class CameraAprilTag:
 	def __init__(self):
-		self.telloCmdVel = Twist()
+		self.objectCoord = objCoord()
+		self.apriltagHMat = apriltagHomographyMat()
+		self.apriltagDistance = Float32()
 
 		self.isApriltag_received = False
 
-		self.MAX_LIN_VEL = 2.00
-		self.MAX_ANG_VEL = 0.4
+		self.knownWidth = 0.135 # m
+		self.perWidth = 120 # pixels
+		self.knownDistance = 1 # m
+		self.focalLength = (self.perWidth * self.knownDistance) / self.knownWidth
 
-		# set PID values for pan
-		self.panP = 0.5
-		self.panI = 0
-		self.panD = 0
-
-		# set PID values for tilt
-		self.tiltP = 1
-		self.tiltI = 0
-		self.tiltD = 0
-
-		# set PID values for yaw
-		self.yawP = 1
-		self.yawI = 0
-		self.yawD = 0
-
-		# create a PID and initialize it
-		self.panPID = PID(self.panP, self.panI, self.panD)
-		self.tiltPID = PID(self.tiltP, self.tiltI, self.tiltD)
-		self.yawPID = PID(self.yawP, self.yawI, self.yawD)
-
-		self.panPID.initialize()
-		self.tiltPID.initialize()
-		self.yawPID.initialize()
-
-		rospy.logwarn("AprilTag Tracking Node [ONLINE]...")
+		rospy.logwarn("AprilTag Center Node [ONLINE]...")
 
 		# rospy shutdown
 		rospy.on_shutdown(self.cbShutdown)
-
-		# Subscribe to CompressedImage msg
-		self.telloCameraInfo_topic = "/tello/camera/camera_info"
-		self.telloCameraInfo_sub = rospy.Subscriber(
-						self.telloCameraInfo_topic, 
-						CameraInfo, 
-						self.cbCameraInfo
-						)
 
 		# Publish to Bool msg
 		self.isApriltag_topic = "/isApriltag"
@@ -105,6 +83,118 @@ class CameraAprilTag:
 					self.cbIsApriltagN
 					)
 
+		# Subscribe to apriltagCenter msg
+		self.apriltagCenterX_topic = "/isApriltag/Center/X"
+		self.apriltagCenterX_sub = rospy.Subscriber(
+					self.apriltagCenterX_topic, 
+					apriltagCenter, 
+					self.cbIsApriltagCenterX
+					)
+
+		# Subscribe to apriltagCenter msg
+		self.apriltagCenterY_topic = "/isApriltag/Center/Y"
+		self.apriltagCenterY_sub = rospy.Subscriber(
+					self.apriltagCenterY_topic, 
+					apriltagCenter, 
+					self.cbIsApriltagCenterY
+					)
+
+		# Subscribe to apriltagHomography msg
+		self.apriltagHomography_H00_topic = "/isApriltag/Homography/H00"
+		self.apriltagHomography_H00_sub = rospy.Subscriber(
+					self.apriltagHomography_H00_topic, 
+					apriltagHomography, 
+					self.cbIsApriltagHomographyH00
+					)
+
+		# Subscribe to apriltagHomography msg
+		self.apriltagHomography_H01_topic = "/isApriltag/Homography/H01"
+		self.apriltagHomography_H01_sub = rospy.Subscriber(
+					self.apriltagHomography_H01_topic, 
+					apriltagHomography, 
+					self.cbIsApriltagHomographyH01
+					)
+
+		# Subscribe to apriltagHomography msg
+		self.apriltagHomography_H02_topic = "/isApriltag/Homography/H02"
+		self.apriltagHomography_H02_sub = rospy.Subscriber(
+					self.apriltagHomography_H02_topic, 
+					apriltagHomography, 
+					self.cbIsApriltagHomographyH02
+					)
+
+		# Subscribe to apriltagHomography msg
+		self.apriltagHomography_H10_topic = "/isApriltag/Homography/H10"
+		self.apriltagHomography_H10_sub = rospy.Subscriber(
+					self.apriltagHomography_H10_topic, 
+					apriltagHomography, 
+					self.cbIsApriltagHomographyH10
+					)
+
+		# Subscribe to apriltagHomography msg
+		self.apriltagHomography_H11_topic = "/isApriltag/Homography/H11"
+		self.apriltagHomography_H11_sub = rospy.Subscriber(
+					self.apriltagHomography_H11_topic, 
+					apriltagHomography, 
+					self.cbIsApriltagHomographyH11
+					)
+
+		# Subscribe to apriltagHomography msg
+		self.apriltagHomography_H12_topic = "/isApriltag/Homography/H12"
+		self.apriltagHomography_H12_sub = rospy.Subscriber(
+					self.apriltagHomography_H12_topic, 
+					apriltagHomography, 
+					self.cbIsApriltagHomographyH12
+					)
+
+		# Subscribe to apriltagHomography msg
+		self.apriltagHomography_H20_topic = "/isApriltag/Homography/H20"
+		self.apriltagHomography_H20_sub = rospy.Subscriber(
+					self.apriltagHomography_H20_topic, 
+					apriltagHomography, 
+					self.cbIsApriltagHomographyH20
+					)
+
+		# Subscribe to apriltagHomography msg
+		self.apriltagHomography_H21_topic = "/isApriltag/Homography/H21"
+		self.apriltagHomography_H21_sub = rospy.Subscriber(
+					self.apriltagHomography_H21_topic, 
+					apriltagHomography, 
+					self.cbIsApriltagHomographyH21
+					)
+
+		# Subscribe to apriltagHomography msg
+		self.apriltagHomography_H22_topic = "/isApriltag/Homography/H22"
+		self.apriltagHomography_H22_sub = rospy.Subscriber(
+					self.apriltagHomography_H22_topic, 
+					apriltagHomography, 
+					self.cbIsApriltagHomographyH22
+					)
+
+		# Subscribe to apriltagCorner msg
+		self.apriltagCorner_X1_topic = "/isApriltag/Corner/X1"
+		self.apriltagCorner_X1_pub = rospy.Subscriber(
+					self.apriltagCorner_X1_topic, 
+					apriltagCorner, 
+					self.cbIsApriltagCornerX1
+					)
+
+		# Subscribe to apriltagCorner msg
+		self.apriltagCorner_X2_topic = "/isApriltag/Corner/X2"
+		self.apriltagCorner_X2_pub = rospy.Subscriber(
+					self.apriltagCorner_X2_topic, 
+					apriltagCorner, 
+					self.cbIsApriltagCornerX2
+					)
+
+		# Subscribe to CompressedImage msg
+		self.telloCameraInfo_topic = "/tello/camera/camera_info"
+		self.telloCameraInfo_sub = rospy.Subscriber(
+						self.telloCameraInfo_topic, 
+						CameraInfo, 
+						self.cbCameraInfo
+						)
+
 		# Subscribe to TelloStatus msg
 		self.telloStatus_topic = "/tello/status"
 		self.telloStatus_sub = rospy.Subscriber(
@@ -118,38 +208,36 @@ class CameraAprilTag:
 		self.telloOdom_sub = rospy.Subscriber(
 					self.telloOdom_topic, 
 					Odometry, 
-					self.cbTelloOdometry
-					)
+					self.cbTelloOdometry)
 
 		# Subscribe to PoseWithCovariance msg
 		self.telloIMU_topic = "/tello/imu"
 		self.telloIMU_sub = rospy.Subscriber(
 					self.telloIMU_topic, 
 					Imu, 
-					self.cbTelloIMU
-					)
+					self.cbTelloIMU)
 
-		# Subscribe to objCenter msg
+		# Publish to objCenter msg
 		self.objCoord_topic = "/isApriltag/objCoord"
-		self.objCoord_sub = rospy.Subscriber(
+		self.objCoord_pub = rospy.Publisher(
 					self.objCoord_topic, 
 					objCoord, 
-					self.cbObjCoord
+					queue_size=10
 					)
 
-		# Subscribe to apriltagHomographyMat msg
+		# Publish to apriltagHomographyMat msg
 		self.homoMat_topic = "/isApriltag/Homography/Mat"
-		self.homoMat_sub = rospy.Subscriber(
+		self.homoMat_pub = rospy.Publisher(
 					self.homoMat_topic, 
 					apriltagHomographyMat, 
-					self.cbHomographyMat
+					queue_size=10
 					)
 
-		# Publish to Twist msg
-		self.telloCmdVel_topic = "/tello/cmd_vel"
-		self.telloCmdVel_pub = rospy.Publisher(
-					self.telloCmdVel_topic, 
-					Twist, 
+		# Publish to Float32 msg
+		self.apriltagDistance_topic = "/isApriltag/Corner/Distance"
+		self.apriltagDistance_pub = rospy.Publisher(
+					self.apriltagDistance_topic, 
+					Float32, 
 					queue_size=10
 					)
 
@@ -174,43 +262,64 @@ class CameraAprilTag:
 	def cbIsApriltagN(self, msg):
 		self.isApriltagN = msg.apriltagN
 
+	# Center X AprilTag3 Detected?
+	def cbIsApriltagCenterX(self, msg):
+		self.isApriltagCenterX = msg.apriltagC
+
+	# Center Y AprilTag3 Detected?
+	def cbIsApriltagCenterY(self, msg):
+		self.isApriltagCenterY = msg.apriltagC
+
+	# Homography H00 AprilTag3 Detected?
+	def cbIsApriltagHomographyH00(self, msg):
+		self.isApriltagHomographyH00 = msg.apriltagH
+
+	# Homography H01 AprilTag3 Detected?
+	def cbIsApriltagHomographyH01(self, msg):
+		self.isApriltagHomographyH01 = msg.apriltagH
+
+	# Homography H02 AprilTag3 Detected?
+	def cbIsApriltagHomographyH02(self, msg):
+		self.isApriltagHomographyH02 = msg.apriltagH
+
+	# Homography H10 AprilTag3 Detected?
+	def cbIsApriltagHomographyH10(self, msg):
+		self.isApriltagHomographyH10 = msg.apriltagH
+
+	# Homography H11 AprilTag3 Detected?
+	def cbIsApriltagHomographyH11(self, msg):
+		self.isApriltagHomographyH11 = msg.apriltagH
+
+	# Homography H12 AprilTag3 Detected?
+	def cbIsApriltagHomographyH12(self, msg):
+		self.isApriltagHomographyH12 = msg.apriltagH
+
+	# Homography H20 AprilTag3 Detected?
+	def cbIsApriltagHomographyH20(self, msg):
+		self.isApriltagHomographyH20 = msg.apriltagH
+
+	# Homography H21 AprilTag3 Detected?
+	def cbIsApriltagHomographyH21(self, msg):
+		self.isApriltagHomographyH21 = msg.apriltagH
+
+	# Homography H22 AprilTag3 Detected?
+	def cbIsApriltagHomographyH22(self, msg):
+		self.isApriltagHomographyH22 = msg.apriltagH
+
+	# Corner X1 AprilTag3 Detected?
+	def cbIsApriltagCornerX1(self, msg):
+		self.isApriltagCornerX1 = msg.apriltagCorner
+
+	# Corner X2 AprilTag3 Detected?
+	def cbIsApriltagCornerX2(self, msg):
+		self.isApriltagCornerX2 = msg.apriltagCorner
+
 	# Convert image to OpenCV format
 	def cbCameraInfo(self, msg):
 
 		self.imgWidth = msg.width
 		self.imgHeight = msg.height
-		self.paramK = msg.K
-
-		self.K = np.array([
-			[self.paramK[0], self.paramK[1], self.paramK[2]], 
-			[self.paramK[3], self.paramK[4], self.paramK[5]], 
-			[self.paramK[6], self.paramK[7], self.paramK[8]]
-			])
-
-	# Convert image to OpenCV format
-	def cbObjCoord(self, msg):
-
-		self.objectCoordX = msg.centerX
-		self.objectCoordY = msg.centerY
-
-	# Convert image to OpenCV format
-	def cbHomographyMat(self, msg):
-
-		self.H00 = msg.H00
-		self.H01 = msg.H01
-		self.H02 = msg.H02
-		self.H10 = msg.H10
-		self.H11 = msg.H11
-		self.H12 = msg.H12
-		self.H20 = msg.H20
-		self.H21 = msg.H21
-		self.H22 = msg.H22
-
-		self.H = np.array([
-			[self.H00, self.H01, self.H02], 
-			[self.H10, self.H11, self.H12],
-			[self.H20, self.H21, self.H22]
-			])
+		self.K = msg.K
 
 	# Get TelloIMU info
 	def cbTelloIMU(self, msg):
@@ -778,127 +887,74 @@ class CameraAprilTag:
 			bottomLeftOrigin)
 
 	def cbAprilTag(self):
-		self.cbPIDerr()
-
-	# show information callback
-	def cbPIDerr(self):
-		self.panErr, self.panOut = self.cbPIDprocess(self.panPID, self.objectCoordX, self.imgWidth // 2)
-		self.tiltErr, self.tiltOut = self.cbPIDprocess(self.tiltPID, self.objectCoordY, self.imgHeight // 2)
-		self.yawErr, self.yawOut = self.cbPIDprocess(self.yawPID, self.objectCoordX, self.imgWidth // 2)
-
-	def cbPIDprocess(self, pid, objCoord, centerCoord):
-		# calculate the error
-		error = centerCoord - objCoord
-
-		# update the value
-		output = pid.update(error)
-
-		return error, output
-
-	def cbCallErr(self):
-		# is AprilTag3 recieved? : True
 		if self.isApriltag_received:
-			# is AprilTag3 detected? : True
 			if self.isApriltag:
-				# is AprilTag3 detected listed? : False
 				if not self.isApriltagN:
-					pass
-				# is AprilTag3 detected listed? : True
+					pass	
 				else:
-					# is AprilTag3 detected listed is 0 : Takeoff or 1 : Land
 					if self.isApriltagN[0] == 0 or self.isApriltagN[0] == 1:
-						self.telloCmdVel.linear.x = 0.0
-						self.telloCmdVel.linear.y = 0.0
-						self.telloCmdVel.linear.z = 0.0
-	
-						self.telloCmdVel.angular.x = 0.0
-						self.telloCmdVel.angular.y = 0.0
-						self.telloCmdVel.angular.z = 0.0
-						self.telloCmdVel_pub.publish(self.telloCmdVel)
-					# is AprilTag3 detected listed it NOT 0 : Takeoff or 1 : Land
+						self.apriltagDistance.data = 0.0
+						pass
 					else:
-						# decompose Homography Matrices to find R, T, and normals
-						retval, rots, trans, normals = cv2.decomposeHomographyMat(self.H, self.K)
+						# AprilTag3 Distance from Camera
+						self.apriltagDistance.data = self.distance_to_camera(
+								self.isApriltagCornerX2[0] - self.isApriltagCornerX1[0]
+								)
+#						rospy.loginfo([self.isApriltagCornerX2, self.isApriltagCornerX1])
 
-						rospy.loginfo(rots)
-						rospy.loginfo(trans)
-						rospy.loginfo(normals)
+#						rospy.loginfo(self.isApriltagHomographyH00)
+						self.apriltagHMat.H00 = self.isApriltagHomographyH00[0]
+						self.apriltagHMat.H01 = self.isApriltagHomographyH01[0]
+						self.apriltagHMat.H02 = self.isApriltagHomographyH02[0]
+						self.apriltagHMat.H10 = self.isApriltagHomographyH10[0]
+						self.apriltagHMat.H11 = self.isApriltagHomographyH11[0]
+						self.apriltagHMat.H12 = self.isApriltagHomographyH12[0]
+						self.apriltagHMat.H20 = self.isApriltagHomographyH20[0]
+						self.apriltagHMat.H21 = self.isApriltagHomographyH21[0]
+						self.apriltagHMat.H22 = self.isApriltagHomographyH22[0]
 
-						# Calculate the PID error
-						self.cbAprilTag()
-
-						# Mapped the speed according to PID error calculated
-						panSpeed = mapped(abs(self.panOut), 0, self.imgWidth // 2, 0, self.MAX_LIN_VEL)
-						tiltSpeed = mapped(abs(self.tiltOut), 0, self.imgHeight // 2, 0, self.MAX_LIN_VEL)
-						yawSpeed = mapped(abs(self.yawOut), 0, self.imgWidth // 2, 0, self.MAX_ANG_VEL)
-
-						# Constrain the speed : speed in range
-						panSpeed = self.constrain(panSpeed, -self.MAX_LIN_VEL, self.MAX_LIN_VEL)
-						tiltSpeed = self.constrain(tiltSpeed, -self.MAX_LIN_VEL, self.MAX_LIN_VEL)
-						yawSpeed = self.constrain(yawSpeed, -self.MAX_ANG_VEL, self.MAX_ANG_VEL)
-
-						# Drone command velocity
-						if self.panOut < -10:
-							self.telloCmdVel.linear.x = panSpeed
-						elif self.panOut > 10:
-							self.telloCmdVel.linear.x = -panSpeed
-						else:
-							self.telloCmdVel.linear.x = 0
-
-						if self.tiltOut > 10:
-							self.telloCmdVel.linear.z = tiltSpeed
-						elif self.tiltOut < -10:
-							self.telloCmdVel.linear.z = -tiltSpeed
-						else:
-							self.telloCmdVel.linear.z = 0
-
-						if self.yawOut > 10:
-							self.telloCmdVel.angular.z = -yawSpeed
-						elif self.yawOut < -10:
-							self.telloCmdVel.angular.z = yawSpeed
-						else:
-							self.telloCmdVel.angular.z = 0
-
-						# Linear speed
-						self.telloCmdVel.linear.y = 0
-
-						# Angular speed
-						self.telloCmdVel.angular.x = 0.0
-						self.telloCmdVel.angular.y = 0.0
-
-						self.telloCmdVel_pub.publish(self.telloCmdVel)
-
-			# is AprilTag3 detected? : False
+						self.objectCoord.centerX = int(self.isApriltagCenterX[0])
+						self.objectCoord.centerY = int(self.isApriltagCenterY[0])
 			else:
-				pass
+				self.apriltagDistance.data = 0.0
 
-		# is AprilTag3 recieved? : False
+				self.apriltagHMat.H00 = 0.0
+				self.apriltagHMat.H01 = 0.0
+				self.apriltagHMat.H02 = 0.0
+				self.apriltagHMat.H10 = 0.0
+				self.apriltagHMat.H11 = 0.0
+				self.apriltagHMat.H12 = 0.0
+				self.apriltagHMat.H20 = 0.0
+				self.apriltagHMat.H21 = 0.0
+				self.apriltagHMat.H22 = 0.0
+
+				self.objectCoord.centerX = self.imgWidth // 2
+				self.objectCoord.centerY = self.imgHeight // 2
+
+			self.objCoord_pub.publish(self.objectCoord)
+			self.homoMat_pub.publish(self.apriltagHMat)
+			self.apriltagDistance_pub.publish(self.apriltagDistance)
 		else:
 			pass
 
-	def constrain(self, input, low, high):
-		if input < low:
-			input = low
-		elif input > high:
-			input = high
-		else:
-			input = input
-
-		return input
+	def distance_to_camera(self, perWidth):
+		# compute and return the distance from the maker to the camera
+		return (self.knownWidth * self.focalLength) / perWidth
 
 	# rospy shutdown callback
 	def cbShutdown(self):
-		rospy.logerr("AprilTag Tracking Node [OFFLINE]...")
+
+		rospy.logerr("AprilTag Center Node [OFFLINE]...")
 
 if __name__ == '__main__':
 
 	# Initialize
-	rospy.init_node('camera_apriltag_tracking', anonymous=False)
+	rospy.init_node('camera_apriltag_center', anonymous=False)
 	camera = CameraAprilTag()
 	
 	r = rospy.Rate(10)
 	
 	# Camera preview
 	while not rospy.is_shutdown():
-		camera.cbCallErr()
+		camera.cbAprilTag()
 		r.sleep()

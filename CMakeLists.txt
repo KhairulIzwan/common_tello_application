@@ -53,6 +53,16 @@ find_package(catkin REQUIRED COMPONENTS
 #   Message1.msg
 #   Message2.msg
    objCenter.msg
+   apriltagInfo.msg
+   apriltagN.msg
+   apriltagH.msg
+   apriltagC.msg
+   apriltagCorner.msg
+   FloatList.msg
+   FloatListList.msg
+   FloatArray.msg
+   arrayHomo.msg
+   arrayCorner.msg
  )
 
 ## Generate services in the 'srv' folder

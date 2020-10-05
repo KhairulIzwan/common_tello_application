@@ -10,10 +10,10 @@
 		<!-- output="screen"> -->
 	</node>
 
-	<!-- COMMON_TELLO_APPLICATION {CAMERA APRILTAG} -->
+	<!-- COMMON_TELLO_APPLICATION {CAMERA APRILTAG_DETECTION} -->
 	<node	pkg="common_tello_application" 
-		name="camera_apriltag" 
-		type="camera_apriltag.py"> 
+		name="camera_apriltag_detection" 
+		type="camera_apriltag_detection.py"> 
 		<!-- output="screen"> -->
 	</node>
 

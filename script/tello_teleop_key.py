@@ -26,15 +26,9 @@ from geometry_msgs.msg import Twist
 import rospy
 
 if os.name == 'nt':
-  import msvcrt
+	import msvcrt
 else:
-  import tty, termios
-
-#BURGER_MAX_LIN_VEL = 0.22
-#BURGER_MAX_ANG_VEL = 2.84
-
-#WAFFLE_MAX_LIN_VEL = 0.26
-#WAFFLE_MAX_ANG_VEL = 1.82
+	import tty, termios
 
 MAX_LIN_VEL = 2.00
 MAX_ANG_VEL = 2.00
@@ -54,6 +48,8 @@ a/d : increase/decrease linear (x) velocity
 i/k : increase/decrease linear (z) velocity
 a/d : increase/decrease angular velocity
 
+v : takeoff
+b : land
 space key : force stop
 
 CTRL-C to quit
@@ -101,22 +97,10 @@ def constrain(input, low, high):
 	return input
 
 def checkLinearLimitVelocity(vel):
-#	if turtlebot3_model == "burger":
-#		vel = constrain(vel, -BURGER_MAX_LIN_VEL, BURGER_MAX_LIN_VEL)
-#	elif turtlebot3_model == "waffle" or turtlebot3_model == "waffle_pi":
-#		vel = constrain(vel, -WAFFLE_MAX_LIN_VEL, WAFFLE_MAX_LIN_VEL)
-#	else:
-#		vel = constrain(vel, -BURGER_MAX_LIN_VEL, BURGER_MAX_LIN_VEL)
 	vel = constrain(vel, -MAX_LIN_VEL, MAX_LIN_VEL)
 	return vel
 
 def checkAngularLimitVelocity(vel):
-#	if turtlebot3_model == "burger":
-#		vel = constrain(vel, -BURGER_MAX_ANG_VEL, BURGER_MAX_ANG_VEL)
-#	elif turtlebot3_model == "waffle" or turtlebot3_model == "waffle_pi":
-#		vel = constrain(vel, -WAFFLE_MAX_ANG_VEL, WAFFLE_MAX_ANG_VEL)
-#	else:
-#		vel = constrain(vel, -BURGER_MAX_ANG_VEL, BURGER_MAX_ANG_VEL)
 	vel = constrain(vel, -MAX_ANG_VEL, MAX_ANG_VEL)
 	return vel
 
@@ -128,8 +112,6 @@ if __name__=="__main__":
 	pub = rospy.Publisher('/tello/cmd_vel', Twist, queue_size=10)
 	pubTakeoff = rospy.Publisher('/tello/takeoff', Empty, queue_size=10)
 	pubLand = rospy.Publisher('/tello/land', Empty, queue_size=10)
-
-#	turtlebot3_model = rospy.get_param("model", "burger")
 
 	status = 0
 	target_linear_x_vel   = 0.0
@@ -211,10 +193,7 @@ if __name__=="__main__":
 				
 				target_angular_vel  = 0.0
 				control_angular_vel = 0.0
-				
-#				land = Empty()
-#				pubLand.publish(land)
-				
+
 				print(vels(target_linear_x_vel, target_linear_y_vel, target_linear_z_vel,target_angular_vel))
 			else:
 				if (key == '\x03'):
