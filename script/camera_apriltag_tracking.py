@@ -64,19 +64,12 @@ class CameraAprilTag:
 		self.tiltI = 0
 		self.tiltD = 0
 
-		# set PID values for yaw
-		self.yawP = 1
-		self.yawI = 0
-		self.yawD = 0
-
 		# create a PID and initialize it
 		self.panPID = PID(self.panP, self.panI, self.panD)
 		self.tiltPID = PID(self.tiltP, self.tiltI, self.tiltD)
-		self.yawPID = PID(self.yawP, self.yawI, self.yawD)
 
 		self.panPID.initialize()
 		self.tiltPID.initialize()
-		self.yawPID.initialize()
 
 		rospy.logwarn("AprilTag Tracking Node [ONLINE]...")
 
@@ -752,7 +745,6 @@ class CameraAprilTag:
 	def cbPIDerr(self):
 		self.panErr, self.panOut = self.cbPIDprocess(self.panPID, self.objectCoordX, self.imgWidth // 2)
 		self.tiltErr, self.tiltOut = self.cbPIDprocess(self.tiltPID, self.objectCoordY, self.imgHeight // 2)
-		self.yawErr, self.yawOut = self.cbPIDprocess(self.yawPID, self.objectCoordX, self.imgWidth // 2)
 
 	def cbPIDprocess(self, pid, objCoord, centerCoord):
 		# calculate the error
@@ -783,7 +775,6 @@ class CameraAprilTag:
 
 						panSpeed = mapped(abs(self.panOut), 0, self.imgWidth // 2, 0, self.MAX_LIN_VEL)
 						tiltSpeed = mapped(abs(self.tiltOut), 0, self.imgHeight // 2, 0, self.MAX_LIN_VEL)
-						yawSpeed = mapped(abs(self.yawOut), 0, self.imgWidth // 2, 0, self.MAX_ANG_VEL)
 		
 						if self.panOut < 0:
 							self.telloCmdVel.linear.x = panSpeed
@@ -799,17 +790,11 @@ class CameraAprilTag:
 						else:
 							self.telloCmdVel.linear.z = 0
 
-						if self.yawOut > 0:
-							self.telloCmdVel.angular.z = -yawSpeed
-						elif self.yawOut < 0:
-							self.telloCmdVel.angular.z = yawSpeed
-						else:
-							self.telloCmdVel.angular.z = 0
-
 						self.telloCmdVel.linear.y = 0
 
 						self.telloCmdVel.angular.x = 0.0
 						self.telloCmdVel.angular.y = 0.0
+						self.telloCmdVel.angular.z = 0.0
 
 						self.telloCmdVel_pub.publish(self.telloCmdVel)
 			else:

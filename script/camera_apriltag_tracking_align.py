@@ -50,6 +50,7 @@ class CameraAprilTag:
 		self.isApriltag_received = False
 
 		self.MAX_LIN_VEL = 2.00
+		self.MAX_LIN_VEL_S = 0.4
 		self.MAX_ANG_VEL = 0.4
 
 		# set PID values for pan
@@ -67,14 +68,21 @@ class CameraAprilTag:
 		self.yawI = 0
 		self.yawD = 0
 
+		# set PID values for distance
+		self.yawP = 1
+		self.yawI = 0
+		self.yawD = 0
+
 		# create a PID and initialize it
 		self.panPID = PID(self.panP, self.panI, self.panD)
 		self.tiltPID = PID(self.tiltP, self.tiltI, self.tiltD)
 		self.yawPID = PID(self.yawP, self.yawI, self.yawD)
+		self.distancePID = PID(self.yawP, self.yawI, self.yawD)
 
 		self.panPID.initialize()
 		self.tiltPID.initialize()
 		self.yawPID.initialize()
+		self.distancePID.initialize()
 
 		rospy.logwarn("AprilTag Tracking Node [ONLINE]...")
 
@@ -145,6 +153,14 @@ class CameraAprilTag:
 					self.cbHomographyMat
 					)
 
+		# Subscribe to Float32 msg
+		self.apriltagDistance_topic = "/isApriltag/Corner/Distance"
+		self.apriltagDistance_sub = rospy.Subscriber(
+					self.apriltagDistance_topic, 
+					Float32, 
+					self.cbIsApriltagDistance
+					)
+
 		# Publish to Twist msg
 		self.telloCmdVel_topic = "/tello/cmd_vel"
 		self.telloCmdVel_pub = rospy.Publisher(
@@ -211,6 +227,9 @@ class CameraAprilTag:
 			[self.H10, self.H11, self.H12],
 			[self.H20, self.H21, self.H22]
 			])
+
+	def cbIsApriltagDistance(self, msg):
+		self.isApriltagDistance = msg.data
 
 	# Get TelloIMU info
 	def cbTelloIMU(self, msg):
@@ -785,6 +804,7 @@ class CameraAprilTag:
 		self.panErr, self.panOut = self.cbPIDprocess(self.panPID, self.objectCoordX, self.imgWidth // 2)
 		self.tiltErr, self.tiltOut = self.cbPIDprocess(self.tiltPID, self.objectCoordY, self.imgHeight // 2)
 		self.yawErr, self.yawOut = self.cbPIDprocess(self.yawPID, self.objectCoordX, self.imgWidth // 2)
+		self.distanceErr, self.distanceOut = self.cbPIDprocess(self.distancePID, 1.0, self.isApriltagDistance)
 
 	def cbPIDprocess(self, pid, objCoord, centerCoord):
 		# calculate the error
@@ -815,58 +835,117 @@ class CameraAprilTag:
 						self.telloCmdVel.angular.y = 0.0
 						self.telloCmdVel.angular.z = 0.0
 						self.telloCmdVel_pub.publish(self.telloCmdVel)
+
 					# is AprilTag3 detected listed it NOT 0 : Takeoff or 1 : Land
 					else:
-						# decompose Homography Matrices to find R, T, and normals
-						retval, rots, trans, normals = cv2.decomposeHomographyMat(self.H, self.K)
+						if self.isApriltagN[0] == 3:
+							# decompose Homography Matrices to find R, T, and normals
+	#						retval, rots, trans, normals = cv2.decomposeHomographyMat(self.H, self.K)
 
-						rospy.loginfo(rots)
-						rospy.loginfo(trans)
-						rospy.loginfo(normals)
+	#						rospy.loginfo(rots)
+	#						rospy.loginfo(trans)
+	#						rospy.loginfo(normals)
 
-						# Calculate the PID error
-						self.cbAprilTag()
+							# Calculate the PID error
+							self.cbAprilTag()
 
-						# Mapped the speed according to PID error calculated
-						panSpeed = mapped(abs(self.panOut), 0, self.imgWidth // 2, 0, self.MAX_LIN_VEL)
-						tiltSpeed = mapped(abs(self.tiltOut), 0, self.imgHeight // 2, 0, self.MAX_LIN_VEL)
-						yawSpeed = mapped(abs(self.yawOut), 0, self.imgWidth // 2, 0, self.MAX_ANG_VEL)
+							rospy.loginfo(self.distanceErr)
 
-						# Constrain the speed : speed in range
-						panSpeed = self.constrain(panSpeed, -self.MAX_LIN_VEL, self.MAX_LIN_VEL)
-						tiltSpeed = self.constrain(tiltSpeed, -self.MAX_LIN_VEL, self.MAX_LIN_VEL)
-						yawSpeed = self.constrain(yawSpeed, -self.MAX_ANG_VEL, self.MAX_ANG_VEL)
+							# Mapped the speed according to PID error calculated
+							panSpeed = mapped(
+								abs(self.panOut), 
+								0, 
+								self.imgWidth // 2, 
+								0, 
+								self.MAX_LIN_VEL)
 
-						# Drone command velocity
-						if self.panOut < -10:
-							self.telloCmdVel.linear.x = panSpeed
-						elif self.panOut > 10:
-							self.telloCmdVel.linear.x = -panSpeed
+							tiltSpeed = mapped(
+								abs(self.tiltOut), 
+								0, 
+								self.imgHeight // 2, 
+								0, 
+								self.MAX_LIN_VEL)
+
+							yawSpeed = mapped(
+								abs(self.yawOut), 
+								0, 
+								self.imgWidth // 2, 
+								0, 
+								self.MAX_ANG_VEL)
+
+							distanceSpeed = mapped(
+								abs(self.distanceOut), 
+								0, 
+								1.0, 
+								0, 
+								self.MAX_LIN_VEL_S)
+
+							# Constrain the speed : speed in range
+							panSpeed = self.constrain(
+								panSpeed, 
+								-self.MAX_LIN_VEL, 
+								self.MAX_LIN_VEL)
+
+							tiltSpeed = self.constrain(
+								tiltSpeed, 
+								-self.MAX_LIN_VEL, 
+								self.MAX_LIN_VEL)
+
+							yawSpeed = self.constrain(
+								yawSpeed, 
+								-self.MAX_ANG_VEL, 
+								self.MAX_ANG_VEL)
+
+							distanceSpeed = self.constrain(
+								distanceSpeed, 
+								-self.MAX_LIN_VEL_S, 
+								self.MAX_LIN_VEL_S)
+
+							# Drone command velocity
+							if self.panOut < -10:
+								self.telloCmdVel.linear.x = panSpeed
+							elif self.panOut > 10:
+								self.telloCmdVel.linear.x = -panSpeed
+							else:
+								self.telloCmdVel.linear.x = 0
+
+							if self.tiltOut > 10:
+								self.telloCmdVel.linear.z = tiltSpeed
+							elif self.tiltOut < -10:
+								self.telloCmdVel.linear.z = -tiltSpeed
+							else:
+								self.telloCmdVel.linear.z = 0
+
+							if self.yawOut > 10:
+								self.telloCmdVel.angular.z = -yawSpeed
+							elif self.yawOut < -10:
+								self.telloCmdVel.angular.z = yawSpeed
+							else:
+								self.telloCmdVel.angular.z = 0
+
+							if self.distanceOut > 0:
+								self.telloCmdVel.linear.y = distanceSpeed
+	#						elif self.distanceOut < 0:
+	#							self.telloCmdVel.linear.y = -distanceSpeed
+							else:
+								self.telloCmdVel.linear.y = 0
+
+							# Angular speed
+							self.telloCmdVel.angular.x = 0.0
+							self.telloCmdVel.angular.y = 0.0
+
+							self.telloCmdVel_pub.publish(self.telloCmdVel)
+
 						else:
-							self.telloCmdVel.linear.x = 0
+							self.telloCmdVel.linear.x = 0.0
+							self.telloCmdVel.linear.y = 0.0
+							self.telloCmdVel.linear.z = 0.0
+							
+							self.telloCmdVel.angular.x = 0.0
+							self.telloCmdVel.angular.x = 0.0
+							self.telloCmdVel.angular.z = 0.0
 
-						if self.tiltOut > 10:
-							self.telloCmdVel.linear.z = tiltSpeed
-						elif self.tiltOut < -10:
-							self.telloCmdVel.linear.z = -tiltSpeed
-						else:
-							self.telloCmdVel.linear.z = 0
-
-						if self.yawOut > 10:
-							self.telloCmdVel.angular.z = -yawSpeed
-						elif self.yawOut < -10:
-							self.telloCmdVel.angular.z = yawSpeed
-						else:
-							self.telloCmdVel.angular.z = 0
-
-						# Linear speed
-						self.telloCmdVel.linear.y = 0
-
-						# Angular speed
-						self.telloCmdVel.angular.x = 0.0
-						self.telloCmdVel.angular.y = 0.0
-
-						self.telloCmdVel_pub.publish(self.telloCmdVel)
+							self.telloCmdVel_pub.publish(self.telloCmdVel)
 
 			# is AprilTag3 detected? : False
 			else:

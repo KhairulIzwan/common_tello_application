@@ -900,7 +900,6 @@ class CameraAprilTag:
 						self.apriltagDistance.data = self.distance_to_camera(
 								self.isApriltagCornerX2[0] - self.isApriltagCornerX1[0]
 								)
-#						rospy.loginfo([self.isApriltagCornerX2, self.isApriltagCornerX1])
 
 #						rospy.loginfo(self.isApriltagHomographyH00)
 						self.apriltagHMat.H00 = self.isApriltagHomographyH00[0]

@@ -330,10 +330,30 @@ Connections:
 Node [/camera_apriltag_detection]
 Publications: 
  * /isApriltag [std_msgs/Bool]
+ * /isApriltag/Center/X [common_tello_application/apriltagC]
+ * /isApriltag/Center/Y [common_tello_application/apriltagC]
+ * /isApriltag/Corner/X1 [common_tello_application/apriltagCorner]
+ * /isApriltag/Corner/X2 [common_tello_application/apriltagCorner]
+ * /isApriltag/Corner/X3 [common_tello_application/apriltagCorner]
+ * /isApriltag/Corner/X4 [common_tello_application/apriltagCorner]
+ * /isApriltag/Corner/Y1 [common_tello_application/apriltagCorner]
+ * /isApriltag/Corner/Y2 [common_tello_application/apriltagCorner]
+ * /isApriltag/Corner/Y3 [common_tello_application/apriltagCorner]
+ * /isApriltag/Corner/Y4 [common_tello_application/apriltagCorner]
+ * /isApriltag/Homography/H00 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H01 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H02 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H10 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H11 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H12 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H20 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H21 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H22 [common_tello_application/apriltagH]
  * /isApriltag/N [common_tello_application/apriltagN]
  * /rosout [rosgraph_msgs/Log]
 
 Subscriptions: 
+ * /isApriltag/Corner/Distance [unknown type]
  * /tello/image_raw/compressed [sensor_msgs/CompressedImage]
  * /tello/imu [sensor_msgs/Imu]
  * /tello/odom [nav_msgs/Odometry]
@@ -344,29 +364,30 @@ Services:
  * /camera_apriltag_detection/set_logger_level
 
 
-contacting node http://192.168.10.4:37103/ ...
-Pid: 31672
+contacting node http://192.168.10.4:35753/ ...
+Pid: 5749
 Connections:
  * topic: /rosout
     * to: /rosout
     * direction: outbound
     * transport: TCPROS
  * topic: /tello/odom
-    * to: /tello/tello_driver_node (http://192.168.10.4:44663/)
+    * to: /tello/tello_driver_node (http://192.168.10.4:32969/)
     * direction: inbound
     * transport: TCPROS
  * topic: /tello/status
-    * to: /tello/tello_driver_node (http://192.168.10.4:44663/)
+    * to: /tello/tello_driver_node (http://192.168.10.4:32969/)
     * direction: inbound
     * transport: TCPROS
  * topic: /tello/imu
-    * to: /tello/tello_driver_node (http://192.168.10.4:44663/)
+    * to: /tello/tello_driver_node (http://192.168.10.4:32969/)
     * direction: inbound
     * transport: TCPROS
  * topic: /tello/image_raw/compressed
-    * to: /tello/image_compressed (http://192.168.10.4:35811/)
+    * to: /tello/image_compressed (http://192.168.10.4:35055/)
     * direction: inbound
     * transport: TCPROS
+
 ```
 
 ## [4] camera_apriltag_takeoff_land.py
