@@ -8,11 +8,11 @@ A project to understand and controlling the **tello** with **ROS** and **Python*
 
 # Required Packages/Library
 1. Tello Driver: 
-	1. http://wiki.ros.org/tello_driver
+	1. https://github.com/KhairulIzwan/tello_driver.git
 
 	**installation**
 	1. cd ~/catkin_ws/src
-	2. git clone https://github.com/appie-17/tello_driver.git
+	2. git clone https://github.com/KhairulIzwan/tello_driver.git
 	3. cd ~/catkin_ws
 	4. catkin_make
 
@@ -26,17 +26,17 @@ A project to understand and controlling the **tello** with **ROS** and **Python*
 	1. https://pypi.org/project/imutils/
 
 	**installation**
-	1. python -m pip install pip install imutils
+	1. python -m pip install imutils
 
-# Important!
-**Tello Driver**
-1. Open tello_node.launch: rosed tello_driver tello_node.launch
-2. Edit this line:
-```
-<node	pkg="image_transport" 
-	name="image_compressed" 
-	type="republish" 
-	args="h264 in:=image_raw compressed out:=image_raw" />
+<!--# Important!-->
+<!--**Tello Driver**-->
+<!--1. Open tello_node.launch: rosed tello_driver tello_node.launch-->
+<!--2. Edit this line:-->
+<!--```-->
+<!--<node	pkg="image_transport" -->
+<!--	name="image_compressed" -->
+<!--	type="republish" -->
+<!--	args="h264 in:=image_raw compressed out:=image_raw" />-->
 ```
 
 **AprilTag3**
