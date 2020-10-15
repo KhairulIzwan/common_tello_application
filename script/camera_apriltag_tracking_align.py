@@ -43,15 +43,19 @@ import rospy
 from common_tello_application.msg import apriltagN as apriltagList
 from common_tello_application.msg import arrayHomo as apriltagHomographyMat
 
+from std_msgs.msg import Empty
+
 class CameraAprilTag:
 	def __init__(self):
 		self.telloCmdVel = Twist()
+		self.land = Empty()
 
 		self.isApriltag_received = False
 
-		self.MAX_LIN_VEL = 2.00
+		self.MAX_LIN_VEL = 1.5
+		self.MAX_LIN_VEL_S2 = 0.4
 		self.MAX_LIN_VEL_S = 0.4
-		self.MAX_ANG_VEL = 0.4
+		self.MAX_ANG_VEL = 1.0
 
 		# set PID values for pan
 		self.panP = 0.5
@@ -59,7 +63,7 @@ class CameraAprilTag:
 		self.panD = 0
 
 		# set PID values for tilt
-		self.tiltP = 1
+		self.tiltP = 2
 		self.tiltI = 0
 		self.tiltD = 0
 
@@ -69,15 +73,15 @@ class CameraAprilTag:
 		self.yawD = 0
 
 		# set PID values for distance
-		self.yawP = 1
-		self.yawI = 0
-		self.yawD = 0
+		self.distanceP = 10
+		self.distanceI = 0
+		self.distanceD = 0
 
 		# create a PID and initialize it
 		self.panPID = PID(self.panP, self.panI, self.panD)
 		self.tiltPID = PID(self.tiltP, self.tiltI, self.tiltD)
 		self.yawPID = PID(self.yawP, self.yawI, self.yawD)
-		self.distancePID = PID(self.yawP, self.yawI, self.yawD)
+		self.distancePID = PID(self.distanceP, self.distanceI, self.distanceD)
 
 		self.panPID.initialize()
 		self.tiltPID.initialize()
@@ -168,6 +172,13 @@ class CameraAprilTag:
 					Twist, 
 					queue_size=10
 					)
+
+		# Publish to Empty msg
+		self.telloLand_topic = "/tello/land"
+		self.telloLand_pub = rospy.Publisher(
+					self.telloLand_topic, 
+					Empty, 
+					queue_size=10)
 
 		# Allow up to one second to connection
 		rospy.sleep(1)
@@ -804,6 +815,7 @@ class CameraAprilTag:
 		self.panErr, self.panOut = self.cbPIDprocess(self.panPID, self.objectCoordX, self.imgWidth // 2)
 		self.tiltErr, self.tiltOut = self.cbPIDprocess(self.tiltPID, self.objectCoordY, self.imgHeight // 2)
 		self.yawErr, self.yawOut = self.cbPIDprocess(self.yawPID, self.objectCoordX, self.imgWidth // 2)
+		# TODO: How to fixed the distance
 		self.distanceErr, self.distanceOut = self.cbPIDprocess(self.distancePID, 1.0, self.isApriltagDistance)
 
 	def cbPIDprocess(self, pid, objCoord, centerCoord):
@@ -849,15 +861,13 @@ class CameraAprilTag:
 							# Calculate the PID error
 							self.cbAprilTag()
 
-							rospy.loginfo(self.distanceErr)
-
 							# Mapped the speed according to PID error calculated
 							panSpeed = mapped(
 								abs(self.panOut), 
 								0, 
 								self.imgWidth // 2, 
 								0, 
-								self.MAX_LIN_VEL)
+								self.MAX_LIN_VEL_S2)
 
 							tiltSpeed = mapped(
 								abs(self.tiltOut), 
@@ -883,8 +893,8 @@ class CameraAprilTag:
 							# Constrain the speed : speed in range
 							panSpeed = self.constrain(
 								panSpeed, 
-								-self.MAX_LIN_VEL, 
-								self.MAX_LIN_VEL)
+								-self.MAX_LIN_VEL_S2, 
+								self.MAX_LIN_VEL_S2)
 
 							tiltSpeed = self.constrain(
 								tiltSpeed, 
@@ -923,18 +933,23 @@ class CameraAprilTag:
 							else:
 								self.telloCmdVel.angular.z = 0
 
-							if self.distanceOut > 0:
+							if self.distanceOut >= 0:
 								self.telloCmdVel.linear.y = distanceSpeed
 	#						elif self.distanceOut < 0:
 	#							self.telloCmdVel.linear.y = -distanceSpeed
 							else:
+								rospy.logwarn("Done!")
 								self.telloCmdVel.linear.y = 0
+								self.telloLand_pub.publish(self.land)
+								pass
 
 							# Angular speed
 							self.telloCmdVel.angular.x = 0.0
 							self.telloCmdVel.angular.y = 0.0
 
 							self.telloCmdVel_pub.publish(self.telloCmdVel)
+
+							rospy.logwarn(self.distanceOut)
 
 						else:
 							self.telloCmdVel.linear.x = 0.0
