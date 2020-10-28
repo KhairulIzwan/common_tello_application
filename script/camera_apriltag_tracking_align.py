@@ -816,7 +816,7 @@ class CameraAprilTag:
 		self.tiltErr, self.tiltOut = self.cbPIDprocess(self.tiltPID, self.objectCoordY, self.imgHeight // 2)
 		self.yawErr, self.yawOut = self.cbPIDprocess(self.yawPID, self.objectCoordX, self.imgWidth // 2)
 		# TODO: How to fixed the distance
-		self.distanceErr, self.distanceOut = self.cbPIDprocess(self.distancePID, 1.0, self.isApriltagDistance)
+		self.distanceErr, self.distanceOut = self.cbPIDprocess(self.distancePID, self.isApriltagDistance, 1.0)
 
 	def cbPIDprocess(self, pid, objCoord, centerCoord):
 		# calculate the error
@@ -933,7 +933,7 @@ class CameraAprilTag:
 							else:
 								self.telloCmdVel.angular.z = 0
 
-							if self.distanceOut >= 0:
+							if self.distanceOut <= 0:
 								self.telloCmdVel.linear.y = distanceSpeed
 	#						elif self.distanceOut < 0:
 	#							self.telloCmdVel.linear.y = -distanceSpeed
