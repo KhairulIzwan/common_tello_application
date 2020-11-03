@@ -37,7 +37,7 @@ A project to understand and controlling the **tello** with **ROS** and **Python*
 <!--	name="image_compressed" -->
 <!--	type="republish" -->
 <!--	args="h264 in:=image_raw compressed out:=image_raw" />-->
-```
+<!--```-->
 
 **AprilTag3**
 # TODO:
@@ -63,7 +63,6 @@ b : land
 space key : force stop
 
 CTRL-C to quit
-```
 ```
 
 1. roslaunch tello_driver tello_node.launch
