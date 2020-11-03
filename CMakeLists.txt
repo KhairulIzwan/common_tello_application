@@ -58,6 +58,7 @@ find_package(catkin REQUIRED COMPONENTS
    apriltagH.msg
    apriltagC.msg
    apriltagCorner.msg
+   apriltagDistance.msg
    FloatList.msg
    FloatListList.msg
    FloatArray.msg

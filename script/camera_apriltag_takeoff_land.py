@@ -711,9 +711,9 @@ class CameraAprilTag:
 			if not self.isApriltagN:
 				pass	
 			else:
-				if self.isApriltagN[0] == 1 and self.is_flying == True:
+				if self.isApriltagN[0] == 5 and self.is_flying == True:
 					self.telloLand_pub.publish(self.land)
-				elif self.isApriltagN[0] == 0 and self.is_flying == False:
+				elif self.isApriltagN[0] == 4 and self.is_flying == False:
 					self.telloTakeoff_pub.publish(self.takeoff)
 		else:
 			pass

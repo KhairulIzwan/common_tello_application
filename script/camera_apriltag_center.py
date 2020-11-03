@@ -731,7 +731,7 @@ class CameraAprilTag:
 				if not self.isApriltagN:
 					pass	
 				else:
-					if self.isApriltagN[0] == 0 or self.isApriltagN[0] == 1:
+					if self.isApriltagN[0] == 4 or self.isApriltagN[0] == 5:
 						pass
 					else:
 						self.objectCoord.centerX = int(self.isApriltagCenterX[0])
