@@ -44,6 +44,7 @@ from common_tello_application.msg import apriltagN as apriltagList
 from common_tello_application.msg import apriltagC as apriltagCenter
 from common_tello_application.msg import apriltagH as apriltagHomography
 from common_tello_application.msg import apriltagCorner
+from common_tello_application.msg import apriltagDistance
 
 import rospy
 
@@ -77,10 +78,16 @@ class CameraAprilTag:
 		self.apriltagCornerY3 = apriltagCorner()
 		self.apriltagCornerX4 = apriltagCorner()
 		self.apriltagCornerY4 = apriltagCorner()
+		self.apriltagDistance = apriltagDistance()
 
 		# state
 		self.image_received = False
-		self.isApriltagDistance_received = False
+#		self.isApriltagDistance_received = False
+
+		self.knownWidth = 0.135 # m
+		self.perWidth = 120 # pixels
+		self.knownDistance = 1 # m
+		self.focalLength = (self.perWidth * self.knownDistance) / self.knownWidth
 
 		rospy.logwarn("AprilTag Detection Node [ONLINE]...")
 
@@ -133,14 +140,6 @@ class CameraAprilTag:
 				self.telloIMU_topic, Imu, 
 				self.cbTelloIMU
 				)
-
-		# Subscribe to Float32 msg
-		self.apriltagDistance_topic = "/isApriltag/Corner/Distance"
-		self.apriltagDistance_sub = rospy.Subscriber(
-					self.apriltagDistance_topic, 
-					Float32, 
-					self.cbIsApriltagDistance
-					)
 
 		# Publish to apriltagCenter msg
 		self.apriltagCenterX_topic = "/isApriltag/Center/X"
@@ -294,6 +293,14 @@ class CameraAprilTag:
 					queue_size=10
 					)
 
+		# Publish to apriltagDistance msg
+		self.apriltagDistance_topic = "/isApriltag/Distance"
+		self.apriltagDistance_pub = rospy.Publisher(
+					self.apriltagDistance_topic, 
+					apriltagDistance, 
+					queue_size=10
+					)
+
 		# Allow up to one second to connection
 		rospy.sleep(1)
 
@@ -314,16 +321,16 @@ class CameraAprilTag:
 		else:
 			self.image_received = False
 
-	def cbIsApriltagDistance(self, msg):
-		try:
-			self.isApriltagDistance = msg.data
-		except AttributeError as e:
-			print(e)
+#	def cbIsApriltagDistance(self, msg):
+#		try:
+#			self.isApriltagDistance = msg.data
+#		except AttributeError as e:
+#			print(e)
 
-		if self.isApriltagDistance is not None:
-			self.isApriltagDistance_received = True
-		else:
-			self.isApriltagDistance_received = False
+#		if self.isApriltagDistance is not None:
+#			self.isApriltagDistance_received = True
+#		else:
+#			self.isApriltagDistance_received = False
 
 	# Get TelloIMU info
 	def cbTelloIMU(self, msg):
@@ -936,6 +943,8 @@ class CameraAprilTag:
 			self.apriltagCorner_X4_list = []
 			self.apriltagCorner_Y4_list = []
 
+			self.apriltagDistance_list = []
+
 			for i in range(len(result)):
 				cv2.putText(
 					self.cv_image, 
@@ -1007,6 +1016,9 @@ class CameraAprilTag:
 				self.apriltagCorner_X4_list.append(result[i][7][3][0])
 				self.apriltagCorner_Y4_list.append(result[i][7][3][1])
 
+				# AprilTag3 Distance from Camera
+				self.apriltagDistance_list.append(self.distance_to_camera(abs(result[i][7][1][0] - result[i][7][0][0])))
+
 			self.isApriltagN.apriltagN = self.apriltagN_list
 			self.isApriltagN_pub.publish(self.isApriltagN)
 
@@ -1052,6 +1064,10 @@ class CameraAprilTag:
 			self.apriltagCorner_Y3_pub.publish(self.apriltagCornerY3)
 			self.apriltagCorner_X4_pub.publish(self.apriltagCornerX4)
 			self.apriltagCorner_Y4_pub.publish(self.apriltagCornerY4)
+
+			self.apriltagDistance.apriltagDistance = self.apriltagDistance_list
+			self.apriltagDistance_pub.publish(self.apriltagDistance)
+
 		else:
 			# AprilTag Detected?
 			self.isApriltag.data = False
@@ -1126,6 +1142,10 @@ class CameraAprilTag:
 			self.apriltagCorner_X4_pub.publish(self.apriltagCornerX4)
 			self.apriltagCorner_Y4_pub.publish(self.apriltagCornerY4)
 
+			self.apriltagDistance_list = []
+			self.apriltagDistance.apriltagDistance = self.apriltagDistance_list
+			self.apriltagDistance_pub.publish(self.apriltagDistance)
+
 		cv2.putText(
 			self.cv_image, 
 			"N AprilTag3: %d" % (len(result)), 
@@ -1159,19 +1179,23 @@ class CameraAprilTag:
 			lineType, 
 			bottomLeftOrigin)
 
-		if self.isApriltagDistance_received:
-			cv2.putText(
-				self.cv_image, 
-				"Distance: %f" % (self.isApriltagDistance), 
-				(20, 200), 
-				fontFace, 
-				fontScale * 5, 
-				(0, 0, 255), 
-				thickness * 2, 
-				lineType, 
-				bottomLeftOrigin)
-		else:
-			pass
+#		if self.isApriltagDistance_received:
+#			cv2.putText(
+#				self.cv_image, 
+#				"Distance: %f" % (self.isApriltagDistance), 
+#				(20, 200), 
+#				fontFace, 
+#				fontScale * 5, 
+#				(0, 0, 255), 
+#				thickness * 2, 
+#				lineType, 
+#				bottomLeftOrigin)
+#		else:
+#			pass
+
+	def distance_to_camera(self, perWidth):
+		# compute and return the distance from the maker to the camera
+		return (self.knownWidth * self.focalLength) / perWidth
 
 	# Show the output frame
 	def cbShowImage(self):

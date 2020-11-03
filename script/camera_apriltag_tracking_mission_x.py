@@ -19,7 +19,7 @@ import random
 import apriltag
 
 # import the necessary ROS packages
-from std_msgs.msg import String, Float32, Bool
+from std_msgs.msg import String, Float32, Bool, UInt8
 from sensor_msgs.msg import Image, CameraInfo, CompressedImage
 
 from cv_bridge import CvBridge
@@ -41,18 +41,26 @@ from geometry_msgs.msg import Twist
 import rospy
 
 from common_tello_application.msg import apriltagN as apriltagList
+from common_tello_application.msg import arrayHomo as apriltagHomographyMat
+from common_tello_application.msg import apriltagDistance
+
+from std_msgs.msg import Empty
 
 class CameraAprilTag:
 	def __init__(self):
-
-		self.bridge = CvBridge()
-		self.objectCoord = objCoord()
 		self.telloCmdVel = Twist()
+		self.land = Empty()
+		self.flip = UInt8()
 
 		self.isApriltag_received = False
 
-		self.MAX_LIN_VEL = 2.00
-		self.MAX_ANG_VEL = 0.4
+		self.state = True
+		self.stateFlip = False
+
+		self.MAX_LIN_VEL = 1.5
+		self.MAX_LIN_VEL_S2 = 0.4
+		self.MAX_LIN_VEL_S = 0.4
+		self.MAX_ANG_VEL = 1.0
 
 		# set PID values for pan
 		self.panP = 0.5
@@ -60,16 +68,37 @@ class CameraAprilTag:
 		self.panD = 0
 
 		# set PID values for tilt
-		self.tiltP = 1
+		self.tiltP = 2
 		self.tiltI = 0
 		self.tiltD = 0
+
+		# set PID values for yaw
+		self.yawP = 1
+		self.yawI = 0
+		self.yawD = 0
+
+		# set PID values for distance
+		self.distanceP = 3
+		self.distanceI = 0
+		self.distanceD = 0.001
+
+		# set PID values for height_m
+		self.heightP = 3
+		self.heightI = 0
+		self.heightD = 0
 
 		# create a PID and initialize it
 		self.panPID = PID(self.panP, self.panI, self.panD)
 		self.tiltPID = PID(self.tiltP, self.tiltI, self.tiltD)
+		self.yawPID = PID(self.yawP, self.yawI, self.yawD)
+		self.distancePID = PID(self.distanceP, self.distanceI, self.distanceD)
+		self.heightPID = PID(self.heightP, self.heightI, self.heightD)
 
 		self.panPID.initialize()
 		self.tiltPID.initialize()
+		self.yawPID.initialize()
+		self.distancePID.initialize()
+		self.heightPID.initialize()
 
 		rospy.logwarn("AprilTag Tracking Node [ONLINE]...")
 
@@ -83,14 +112,6 @@ class CameraAprilTag:
 						CameraInfo, 
 						self.cbCameraInfo
 						)
-
-		# Subscribe to TelloStatus msg
-		self.telloStatus_topic = "/tello/status"
-		self.telloStatus_sub = rospy.Subscriber(
-					self.telloStatus_topic, 
-					TelloStatus, 
-					self.cbTelloStatus
-					)
 
 		# Publish to Bool msg
 		self.isApriltag_topic = "/isApriltag"
@@ -106,6 +127,14 @@ class CameraAprilTag:
 					self.isApriltagN_topic, 
 					apriltagList, 
 					self.cbIsApriltagN
+					)
+
+		# Subscribe to TelloStatus msg
+		self.telloStatus_topic = "/tello/status"
+		self.telloStatus_sub = rospy.Subscriber(
+					self.telloStatus_topic, 
+					TelloStatus, 
+					self.cbTelloStatus
 					)
 
 		# Subscribe to Odometry msg
@@ -132,6 +161,22 @@ class CameraAprilTag:
 					self.cbObjCoord
 					)
 
+		# Subscribe to apriltagHomographyMat msg
+		self.homoMat_topic = "/isApriltag/Homography/Mat"
+		self.homoMat_sub = rospy.Subscriber(
+					self.homoMat_topic, 
+					apriltagHomographyMat, 
+					self.cbHomographyMat
+					)
+
+		# Subscribe to Float32 msg
+		self.apriltagDistance_topic = "/isApriltag/Distance"
+		self.apriltagDistance_sub = rospy.Subscriber(
+					self.apriltagDistance_topic, 
+					apriltagDistance, 
+					self.cbIsApriltagDistance
+					)
+
 		# Publish to Twist msg
 		self.telloCmdVel_topic = "/tello/cmd_vel"
 		self.telloCmdVel_pub = rospy.Publisher(
@@ -139,6 +184,20 @@ class CameraAprilTag:
 					Twist, 
 					queue_size=10
 					)
+
+		# Publish to Empty msg
+		self.telloLand_topic = "/tello/land"
+		self.telloLand_pub = rospy.Publisher(
+					self.telloLand_topic, 
+					Empty, 
+					queue_size=10)
+
+		# Publish to UInt8 msg
+		self.telloFlip_topic = "/tello/flip"
+		self.telloFlip_pub = rospy.Publisher(
+					self.telloFlip_topic, 
+					UInt8, 
+					queue_size=10)
 
 		# Allow up to one second to connection
 		rospy.sleep(1)
@@ -166,12 +225,41 @@ class CameraAprilTag:
 
 		self.imgWidth = msg.width
 		self.imgHeight = msg.height
-		
+		self.paramK = msg.K
+
+		self.K = np.array([
+			[self.paramK[0], self.paramK[1], self.paramK[2]], 
+			[self.paramK[3], self.paramK[4], self.paramK[5]], 
+			[self.paramK[6], self.paramK[7], self.paramK[8]]
+			])
+
 	# Convert image to OpenCV format
 	def cbObjCoord(self, msg):
 
 		self.objectCoordX = msg.centerX
 		self.objectCoordY = msg.centerY
+
+	# Convert image to OpenCV format
+	def cbHomographyMat(self, msg):
+
+		self.H00 = msg.H00
+		self.H01 = msg.H01
+		self.H02 = msg.H02
+		self.H10 = msg.H10
+		self.H11 = msg.H11
+		self.H12 = msg.H12
+		self.H20 = msg.H20
+		self.H21 = msg.H21
+		self.H22 = msg.H22
+
+		self.H = np.array([
+			[self.H00, self.H01, self.H02], 
+			[self.H10, self.H11, self.H12],
+			[self.H20, self.H21, self.H22]
+			])
+
+	def cbIsApriltagDistance(self, msg):
+		self.isApriltagDistance = msg.apriltagDistance
 
 	# Get TelloIMU info
 	def cbTelloIMU(self, msg):
@@ -738,13 +826,16 @@ class CameraAprilTag:
 			lineType, 
 			bottomLeftOrigin)
 
-	def cbAprilTag(self):
-		self.cbPIDerr()
+#	def cbAprilTag(self):
+#		self.cbPIDerr()
 
 	# show information callback
-	def cbPIDerr(self):
+	def cbPIDerrCenter(self):
 		self.panErr, self.panOut = self.cbPIDprocess(self.panPID, self.objectCoordX, self.imgWidth // 2)
 		self.tiltErr, self.tiltOut = self.cbPIDprocess(self.tiltPID, self.objectCoordY, self.imgHeight // 2)
+		self.yawErr, self.yawOut = self.cbPIDprocess(self.yawPID, self.objectCoordX, self.imgWidth // 2)
+		# TODO: How to fixed the distance
+		self.distanceErr, self.distanceOut = self.cbPIDprocess(self.distancePID, self.isApriltagDistance[0], 1.5)
 
 	def cbPIDprocess(self, pid, objCoord, centerCoord):
 		# calculate the error
@@ -756,11 +847,16 @@ class CameraAprilTag:
 		return error, output
 
 	def cbCallErr(self):
+		# is AprilTag3 recieved? : True
 		if self.isApriltag_received:
+			# is AprilTag3 detected? : True
 			if self.isApriltag:
+				# is AprilTag3 detected listed? : False
 				if not self.isApriltagN:
 					pass
+				# is AprilTag3 detected listed? : True
 				else:
+					# is AprilTag3 detected listed is 0 : Takeoff or 1 : Land
 					if self.isApriltagN[0] == 0 or self.isApriltagN[0] == 1:
 						self.telloCmdVel.linear.x = 0.0
 						self.telloCmdVel.linear.y = 0.0
@@ -770,37 +866,173 @@ class CameraAprilTag:
 						self.telloCmdVel.angular.y = 0.0
 						self.telloCmdVel.angular.z = 0.0
 						self.telloCmdVel_pub.publish(self.telloCmdVel)
+
+					# is AprilTag3 detected listed it NOT 0 : Takeoff or 1 : Land
 					else:
-						self.cbAprilTag()
+						if self.isApriltagN[0] == 3 and self.state == True:
+							# Calculate the PID error
+							self.cbPIDerrCenter()
 
-						panSpeed = mapped(abs(self.panOut), 0, self.imgWidth // 2, 0, self.MAX_LIN_VEL)
-						tiltSpeed = mapped(abs(self.tiltOut), 0, self.imgHeight // 2, 0, self.MAX_LIN_VEL)
-		
-						if self.panOut < 0:
-							self.telloCmdVel.linear.x = panSpeed
-						elif self.panOut > 0:
-							self.telloCmdVel.linear.x = -panSpeed
+							# Mapped the speed according to PID error calculated
+							panSpeed = mapped(
+								abs(self.panOut), 
+								0, 
+								self.imgWidth // 2, 
+								0, 
+								self.MAX_LIN_VEL_S2)
+
+							tiltSpeed = mapped(
+								abs(self.tiltOut), 
+								0, 
+								self.imgHeight // 2, 
+								0, 
+								self.MAX_LIN_VEL)
+
+							yawSpeed = mapped(
+								abs(self.yawOut), 
+								0, 
+								self.imgWidth // 2, 
+								0, 
+								self.MAX_ANG_VEL)
+
+							distanceSpeed = mapped(
+								abs(self.distanceOut), 
+								0, 
+								1.5, 
+								0, 
+								self.MAX_LIN_VEL_S)
+
+							# Constrain the speed : speed in range
+							panSpeed = self.constrain(
+								panSpeed, 
+								-self.MAX_LIN_VEL_S2, 
+								self.MAX_LIN_VEL_S2)
+
+							tiltSpeed = self.constrain(
+								tiltSpeed, 
+								-self.MAX_LIN_VEL, 
+								self.MAX_LIN_VEL)
+
+							yawSpeed = self.constrain(
+								yawSpeed, 
+								-self.MAX_ANG_VEL, 
+								self.MAX_ANG_VEL)
+
+							distanceSpeed = self.constrain(
+								distanceSpeed, 
+								-self.MAX_LIN_VEL_S, 
+								self.MAX_LIN_VEL_S)
+
+							# Drone command velocity
+#							if self.panOut < -10:
+#								self.telloCmdVel.linear.x = panSpeed
+#							elif self.panOut > 10:
+#								self.telloCmdVel.linear.x = -panSpeed
+#							else:
+#								self.telloCmdVel.linear.x = 0
+
+							if self.tiltOut > 10:
+								self.telloCmdVel.linear.z = tiltSpeed
+							elif self.tiltOut < -10:
+								self.telloCmdVel.linear.z = -tiltSpeed
+							else:
+								self.telloCmdVel.linear.z = 0
+
+							if self.yawOut > 10:
+								self.telloCmdVel.angular.z = -yawSpeed
+							elif self.yawOut < -10:
+								self.telloCmdVel.angular.z = yawSpeed
+							else:
+								self.telloCmdVel.angular.z = 0
+
+							if self.distanceOut <= 0:
+								self.telloCmdVel.linear.y = distanceSpeed
+	#						elif self.distanceOut < 0:
+	#							self.telloCmdVel.linear.y = -distanceSpeed
+							else:
+								rospy.logwarn("Done!")
+								self.telloCmdVel.linear.y = 0
+#								self.flip.data = 0
+#								self.telloLand_pub.publish(self.land)
+								self.state = False
+#								self.stateFlip = True
+#								pass
+
+							# Angular speed
+							self.telloCmdVel.angular.x = 0.0
+							self.telloCmdVel.angular.y = 0.0
+
+							self.telloCmdVel_pub.publish(self.telloCmdVel)
+
+							if self.stateFlip == True:
+								self.heightErr, self.heightOut = self.cbPIDprocess(self.heightPID, 									self.height_m, 1.5)
+
+								heightSpeed = mapped(
+									abs(self.heightOut), 
+									0, 
+									1.5, 
+									0, 
+									self.MAX_LIN_VEL)
+
+								if self.heightOut >= 0 and self.height_m <= 1.5:
+									self.telloCmdVel.linear.z = heightSpeed
+#									if self.height_m > 1.5:
+#										self.flip.data = 0
+#										self.telloFlip_pub.publish(self.flip)
+#										rospy.logwarn("Done 2!")
+#										self.stateFlip = False
+#										self.state = False
+								else:
+									rospy.logwarn("Done 3!")
+									self.telloCmdVel.linear.z = 0
+									self.flip.data = 0
+									self.telloFlip_pub.publish(self.flip)
+	##								self.telloLand_pub.publish(self.land)
+									self.stateFlip = False
+								
+								self.telloCmdVel.linear.x = 0.0
+								self.telloCmdVel.linear.y = 0.0
+	#							self.telloCmdVel.linear.z = 0.0
+							
+								self.telloCmdVel.angular.x = 0.0
+								self.telloCmdVel.angular.x = 0.0
+								self.telloCmdVel.angular.z = 0.0
+
+								self.telloCmdVel_pub.publish(self.telloCmdVel)
+
+	#							rospy.logwarn(self.distanceOut)
+
+							elif self.stateFlip == False:
+								self.telloLand_pub.publish(self.land)
+
 						else:
-							self.telloCmdVel.linear.x = 0
+							self.telloCmdVel.linear.x = 0.0
+							self.telloCmdVel.linear.y = 0.0
+							self.telloCmdVel.linear.z = 0.0
+							
+							self.telloCmdVel.angular.x = 0.0
+							self.telloCmdVel.angular.x = 0.0
+							self.telloCmdVel.angular.z = 0.0
 
-						if self.tiltOut > 0:
-							self.telloCmdVel.linear.z = tiltSpeed
-						elif self.tiltOut < 0:
-							self.telloCmdVel.linear.z = -tiltSpeed
-						else:
-							self.telloCmdVel.linear.z = 0
+							self.telloCmdVel_pub.publish(self.telloCmdVel)
 
-						self.telloCmdVel.linear.y = 0
-
-						self.telloCmdVel.angular.x = 0.0
-						self.telloCmdVel.angular.y = 0.0
-						self.telloCmdVel.angular.z = 0.0
-
-						self.telloCmdVel_pub.publish(self.telloCmdVel)
+			# is AprilTag3 detected? : False
 			else:
 				pass
+
+		# is AprilTag3 recieved? : False
 		else:
 			pass
+
+	def constrain(self, input, low, high):
+		if input < low:
+			input = low
+		elif input > high:
+			input = high
+		else:
+			input = input
+
+		return input
 
 	# rospy shutdown callback
 	def cbShutdown(self):

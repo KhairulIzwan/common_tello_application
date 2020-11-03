@@ -42,6 +42,7 @@ import rospy
 
 from common_tello_application.msg import apriltagN as apriltagList
 from common_tello_application.msg import arrayHomo as apriltagHomographyMat
+from common_tello_application.msg import apriltagDistance
 
 from std_msgs.msg import Empty
 
@@ -158,10 +159,10 @@ class CameraAprilTag:
 					)
 
 		# Subscribe to Float32 msg
-		self.apriltagDistance_topic = "/isApriltag/Corner/Distance"
+		self.apriltagDistance_topic = "/isApriltag/Distance"
 		self.apriltagDistance_sub = rospy.Subscriber(
 					self.apriltagDistance_topic, 
-					Float32, 
+					apriltagDistance, 
 					self.cbIsApriltagDistance
 					)
 
