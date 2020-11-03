@@ -96,7 +96,7 @@ Services:
  * /tello/tello_driver_node/get_loggers
  * /tello/tello_driver_node/set_logger_level
  * /tello/tello_driver_node/set_parameters
-
+ ```
 
 <!--contacting node http://192.168.10.4:44357/ ...-->
 <!--Pid: 22495-->
@@ -121,7 +121,6 @@ Services:
 <!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
 <!--    * direction: inbound-->
 <!--    * transport: TCPROS-->
- ```
  
 2. rosrun common_tello_application tello_teleop_key.py
 
