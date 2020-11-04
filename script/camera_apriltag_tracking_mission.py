@@ -979,25 +979,25 @@ class CameraAprilTag:
 							self.telloCmdVel_pub.publish(self.telloCmdVel)
 
 						elif self.state == False:
-							if float(self.height_m) > 1.5:
-								self.telloCmdVel.linear.z = 0.0
-								self.telloLand_pub.publish(self.land)
-								rospy.logwarn("LANDING...")
-							elif float(self.height_m) < 1.5:
-								rospy.loginfo("UP!")	
-								self.telloCmdVel.linear.z = 0.4
+#							if float(self.height_m) > 1.5:
+#								self.telloCmdVel.linear.z = 0.0
+#								self.telloLand_pub.publish(self.land)
+#								rospy.logwarn("LANDING...")
+#							elif float(self.height_m) < 1.5:
+#								rospy.loginfo("UP!")	
+#								self.telloCmdVel.linear.z = 0.4
 
 							self.telloCmdVel.linear.x = 0.0
 							self.telloCmdVel.linear.y = 0.0
-#							self.telloCmdVel.linear.z = 0.0
+							self.telloCmdVel.linear.z = 0.0
 							
 							self.telloCmdVel.angular.x = 0.0
 							self.telloCmdVel.angular.x = 0.0
 							self.telloCmdVel.angular.z = 0.0
 
 							self.telloCmdVel_pub.publish(self.telloCmdVel)
-#							self.telloLand_pub.publish(self.land)
-#							rospy.logwarn("LANDING...")
+							self.telloLand_pub.publish(self.land)
+							rospy.logwarn("LANDING...")
 
 #						elif self.stateLand == True:
 #							self.telloCmdVel.linear.x = 0.0
