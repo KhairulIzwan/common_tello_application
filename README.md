@@ -318,23 +318,23 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 <!--    * direction: inbound-->
 <!--    * transport: TCPROS-->
 
-2. rosrun common_tello_application camera_preview.py
+<!--2. rosrun common_tello_application camera_preview.py-->
 
-```
-Node [/camera_preview]
-Publications: 
- * /rosout [rosgraph_msgs/Log]
+<!--```-->
+<!--Node [/camera_preview]-->
+<!--Publications: -->
+<!-- * /rosout [rosgraph_msgs/Log]-->
 
-Subscriptions: 
- * /tello/image_raw/compressed [sensor_msgs/CompressedImage]
- * /tello/imu [sensor_msgs/Imu]
- * /tello/odom [nav_msgs/Odometry]
- * /tello/status [tello_driver/TelloStatus]
+<!--Subscriptions: -->
+<!-- * /tello/image_raw/compressed [sensor_msgs/CompressedImage]-->
+<!-- * /tello/imu [sensor_msgs/Imu]-->
+<!-- * /tello/odom [nav_msgs/Odometry]-->
+<!-- * /tello/status [tello_driver/TelloStatus]-->
 
-Services: 
- * /camera_preview/get_loggers
- * /camera_preview/set_logger_level
-```
+<!--Services: -->
+<!-- * /camera_preview/get_loggers-->
+<!-- * /camera_preview/set_logger_level-->
+<!--```-->
 
 <!--contacting node http://192.168.10.4:41771/ ...-->
 <!--Pid: 22984-->
