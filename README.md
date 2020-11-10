@@ -261,7 +261,7 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 ### camera_preview.py
 - [x] Preview an image stream from tello
 
-1. roslaunch tello_driver tello_node.launch
+<!--1. roslaunch tello_driver tello_node.launch-->
 
 <!-- ```-->
 <!--Node [/tello/tello_driver_node]-->
