@@ -363,62 +363,62 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 ### camera_apriltag_detection.py
 - [x] Detect an AprilTag3 to get useful information
 
-1. roslaunch tello_driver tello_node.launch
+<!--1. roslaunch tello_driver tello_node.launch-->
 
- ```
-Node [/tello/tello_driver_node]
-Publications: 
- * /rosout [rosgraph_msgs/Log]
- * /tello/camera/camera_info [sensor_msgs/CameraInfo]
- * /tello/image_raw/h264 [sensor_msgs/CompressedImage]
- * /tello/imu [sensor_msgs/Imu]
- * /tello/odom [nav_msgs/Odometry]
- * /tello/status [tello_driver/TelloStatus]
- * /tello/tello_driver_node/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
- * /tello/tello_driver_node/parameter_updates [dynamic_reconfigure/Config]
+<!-- ```-->
+<!--Node [/tello/tello_driver_node]-->
+<!--Publications: -->
+<!-- * /rosout [rosgraph_msgs/Log]-->
+<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->
+<!-- * /tello/image_raw/h264 [sensor_msgs/CompressedImage]-->
+<!-- * /tello/imu [sensor_msgs/Imu]-->
+<!-- * /tello/odom [nav_msgs/Odometry]-->
+<!-- * /tello/status [tello_driver/TelloStatus]-->
+<!-- * /tello/tello_driver_node/parameter_descriptions [dynamic_reconfigure/ConfigDescription]-->
+<!-- * /tello/tello_driver_node/parameter_updates [dynamic_reconfigure/Config]-->
 
-Subscriptions: 
- * /tello/cmd_vel [geometry_msgs/Twist]
- * /tello/emergency [unknown type]
- * /tello/fast_mode [unknown type]
- * /tello/flattrim [unknown type]
- * /tello/flip [unknown type]
- * /tello/land [std_msgs/Empty]
- * /tello/manual_takeoff [unknown type]
- * /tello/palm_land [unknown type]
- * /tello/takeoff [std_msgs/Empty]
- * /tello/throw_takeoff [unknown type]
- * /tello/video_mode [unknown type]
+<!--Subscriptions: -->
+<!-- * /tello/cmd_vel [geometry_msgs/Twist]-->
+<!-- * /tello/emergency [unknown type]-->
+<!-- * /tello/fast_mode [unknown type]-->
+<!-- * /tello/flattrim [unknown type]-->
+<!-- * /tello/flip [unknown type]-->
+<!-- * /tello/land [std_msgs/Empty]-->
+<!-- * /tello/manual_takeoff [unknown type]-->
+<!-- * /tello/palm_land [unknown type]-->
+<!-- * /tello/takeoff [std_msgs/Empty]-->
+<!-- * /tello/throw_takeoff [unknown type]-->
+<!-- * /tello/video_mode [unknown type]-->
 
-Services: 
- * /tello/tello_driver_node/get_loggers
- * /tello/tello_driver_node/set_logger_level
- * /tello/tello_driver_node/set_parameters
- ```
+<!--Services: -->
+<!-- * /tello/tello_driver_node/get_loggers-->
+<!-- * /tello/tello_driver_node/set_logger_level-->
+<!-- * /tello/tello_driver_node/set_parameters-->
+<!-- ```-->
 
-contacting node http://192.168.10.4:44357/ ...
-Pid: 22495
-Connections:
- * topic: /tello/image_raw/h264
-    * to: /tello/image_compressed
-    * direction: outbound
-    * transport: TCPROS
- * topic: /rosout
-    * to: /rosout
-    * direction: outbound
-    * transport: TCPROS
- * topic: /tello/land
-    * to: /tello_teleop (http://192.168.10.4:46683/)
-    * direction: inbound
-    * transport: TCPROS
- * topic: /tello/takeoff
-    * to: /tello_teleop (http://192.168.10.4:46683/)
-    * direction: inbound
-    * transport: TCPROS
- * topic: /tello/cmd_vel
-    * to: /tello_teleop (http://192.168.10.4:46683/)
-    * direction: inbound
-    * transport: TCPROS
+<!--contacting node http://192.168.10.4:44357/ ...-->
+<!--Pid: 22495-->
+<!--Connections:-->
+<!-- * topic: /tello/image_raw/h264-->
+<!--    * to: /tello/image_compressed-->
+<!--    * direction: outbound-->
+<!--    * transport: TCPROS-->
+<!-- * topic: /rosout-->
+<!--    * to: /rosout-->
+<!--    * direction: outbound-->
+<!--    * transport: TCPROS-->
+<!-- * topic: /tello/land-->
+<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
+<!--    * direction: inbound-->
+<!--    * transport: TCPROS-->
+<!-- * topic: /tello/takeoff-->
+<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
+<!--    * direction: inbound-->
+<!--    * transport: TCPROS-->
+<!-- * topic: /tello/cmd_vel-->
+<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
+<!--    * direction: inbound-->
+<!--    * transport: TCPROS-->
 
 2. rosrun common_tello_application camera_apriltag_detection.py
 
