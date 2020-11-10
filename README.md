@@ -1,8 +1,81 @@
 # common_tello_application
-# About
+
+## About
 A project to understand and controlling the **tello** with **ROS** and **Python**
 
-# System Requirement
+## Project structure
+```
+├── CMakeLists.txt
+├── etc
+│   ├── AprilTag3
+│   │   ├── 0.svg
+│   │   ├── 10.svg
+│   │   ├── 11.svg
+│   │   ├── 12.svg
+│   │   ├── 13.svg
+│   │   ├── 14.svg
+│   │   ├── 15.svg
+│   │   ├── 16.svg
+│   │   ├── 17.svg
+│   │   ├── 18.svg
+│   │   ├── 19.svg
+│   │   ├── 1.svg
+│   │   ├── 20.svg
+│   │   ├── 2.svg
+│   │   ├── 3.svg
+│   │   ├── 4.svg
+│   │   ├── 5.svg
+│   │   ├── 6.svg
+│   │   ├── 7.svg
+│   │   ├── 8.svg
+│   │   └── 9.svg
+│   └── Gates-AprilTag3.pdf
+├── include
+│   └── common_tello_application
+├── launch
+│   ├── camera_apriltag_center.launch
+│   ├── camera_apriltag_detection.launch
+│   ├── camera_apriltag_takeoff_land.launch
+│   ├── camera_apriltag_tracking.launch
+│   ├── camera_bringup.launch
+│   └── camera_preview.launch
+├── msg
+│   ├── apriltagC.msg
+│   ├── apriltagCorner.msg
+│   ├── apriltagDistance.msg
+│   ├── apriltagH.msg
+│   ├── apriltagInfo.msg
+│   ├── apriltagN.msg
+│   ├── arrayCorner.msg
+│   ├── arrayHomo.msg
+│   ├── FloatArray.msg
+│   ├── FloatListList.msg
+│   ├── FloatList.msg
+│   └── objCenter.msg
+├── package.xml
+├── README.md
+├── script
+│   ├── camera_apriltag_align.py
+│   ├── camera_apriltag_center.py
+│   ├── camera_apriltag_detection.py
+│   ├── camera_apriltag_takeoff_land.py
+│   ├── camera_apriltag_tracking_align.py
+│   ├── camera_apriltag_tracking_mission.py
+│   ├── camera_apriltag_tracking_mission_x.py
+│   ├── camera_apriltag_tracking.py
+│   ├── camera_preview.py
+│   └── tello_teleop_key.py
+├── setup.py
+└── src
+    └── common_tello_application
+        ├── __init__.py
+        ├── makesimpleprofile.py
+        ├── makesimpleprofile.pyc
+        ├── objcenter.py
+        ├── pid.py
+        └── pid.pyc
+```
+## System Requirement
 1. Ubuntu 16.04
 2. ROS Kinetic
 
