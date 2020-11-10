@@ -139,7 +139,7 @@ $ python -m pip install imutils
 <!--```-->
 
 ## AprilTag3 Marking
-*Please print out the apriltag marking provided:* **inside the etc/AprilTag3/ file name Gates-AprilTag3.pdf**
+_Please print out the apriltag marking provided inside the **etc/AprilTag3/** file name **Gates-AprilTag3.pdf**_
 
 # How it works?
 ## [1] tello_teleop_key.py
