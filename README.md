@@ -138,8 +138,8 @@ $ python -m pip install imutils
 <!--	args="h264 in:=image_raw compressed out:=image_raw" />-->
 <!--```-->
 
-**AprilTag3**
-# TODO:
+## AprilTag3
+*Please print out the apriltag marking provided: **inside the etc/AprilTag3/ file name Gates-AprilTag3.pdf** *
 
 # How it works?
 ## [1] tello_teleop_key.py
