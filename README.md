@@ -142,7 +142,7 @@ $ python -m pip install imutils
 _Please print out the apriltag marking provided inside the **etc/AprilTag3/** file name **Gates-AprilTag3.pdf**_
 
 ## Scripts
-## tello_teleop_key.py
+### tello_teleop_key.py
 - [x] Controlling the tello drone using keyboard
 
 <!--```-->
@@ -360,614 +360,614 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 <!--    * direction: inbound-->
 <!--    * transport: TCPROS-->
 
-### camera_apriltag_detection.py
-- [x] Detect an AprilTag3 to get useful information
+<!--### camera_apriltag_detection.py-->
+<!--- [x] Detect an AprilTag3 to get useful information-->
 
-<!--1. roslaunch tello_driver tello_node.launch-->
+<!--<!--1. roslaunch tello_driver tello_node.launch-->-->
 
-<!-- ```-->
-<!--Node [/tello/tello_driver_node]-->
-<!--Publications: -->
-<!-- * /rosout [rosgraph_msgs/Log]-->
-<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->
-<!-- * /tello/image_raw/h264 [sensor_msgs/CompressedImage]-->
-<!-- * /tello/imu [sensor_msgs/Imu]-->
-<!-- * /tello/odom [nav_msgs/Odometry]-->
-<!-- * /tello/status [tello_driver/TelloStatus]-->
-<!-- * /tello/tello_driver_node/parameter_descriptions [dynamic_reconfigure/ConfigDescription]-->
-<!-- * /tello/tello_driver_node/parameter_updates [dynamic_reconfigure/Config]-->
+<!--<!-- ```-->-->
+<!--<!--Node [/tello/tello_driver_node]-->-->
+<!--<!--Publications: -->-->
+<!--<!-- * /rosout [rosgraph_msgs/Log]-->-->
+<!--<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->-->
+<!--<!-- * /tello/image_raw/h264 [sensor_msgs/CompressedImage]-->-->
+<!--<!-- * /tello/imu [sensor_msgs/Imu]-->-->
+<!--<!-- * /tello/odom [nav_msgs/Odometry]-->-->
+<!--<!-- * /tello/status [tello_driver/TelloStatus]-->-->
+<!--<!-- * /tello/tello_driver_node/parameter_descriptions [dynamic_reconfigure/ConfigDescription]-->-->
+<!--<!-- * /tello/tello_driver_node/parameter_updates [dynamic_reconfigure/Config]-->-->
 
-<!--Subscriptions: -->
-<!-- * /tello/cmd_vel [geometry_msgs/Twist]-->
-<!-- * /tello/emergency [unknown type]-->
-<!-- * /tello/fast_mode [unknown type]-->
-<!-- * /tello/flattrim [unknown type]-->
-<!-- * /tello/flip [unknown type]-->
-<!-- * /tello/land [std_msgs/Empty]-->
-<!-- * /tello/manual_takeoff [unknown type]-->
-<!-- * /tello/palm_land [unknown type]-->
-<!-- * /tello/takeoff [std_msgs/Empty]-->
-<!-- * /tello/throw_takeoff [unknown type]-->
-<!-- * /tello/video_mode [unknown type]-->
+<!--<!--Subscriptions: -->-->
+<!--<!-- * /tello/cmd_vel [geometry_msgs/Twist]-->-->
+<!--<!-- * /tello/emergency [unknown type]-->-->
+<!--<!-- * /tello/fast_mode [unknown type]-->-->
+<!--<!-- * /tello/flattrim [unknown type]-->-->
+<!--<!-- * /tello/flip [unknown type]-->-->
+<!--<!-- * /tello/land [std_msgs/Empty]-->-->
+<!--<!-- * /tello/manual_takeoff [unknown type]-->-->
+<!--<!-- * /tello/palm_land [unknown type]-->-->
+<!--<!-- * /tello/takeoff [std_msgs/Empty]-->-->
+<!--<!-- * /tello/throw_takeoff [unknown type]-->-->
+<!--<!-- * /tello/video_mode [unknown type]-->-->
 
-<!--Services: -->
-<!-- * /tello/tello_driver_node/get_loggers-->
-<!-- * /tello/tello_driver_node/set_logger_level-->
-<!-- * /tello/tello_driver_node/set_parameters-->
-<!-- ```-->
+<!--<!--Services: -->-->
+<!--<!-- * /tello/tello_driver_node/get_loggers-->-->
+<!--<!-- * /tello/tello_driver_node/set_logger_level-->-->
+<!--<!-- * /tello/tello_driver_node/set_parameters-->-->
+<!--<!-- ```-->-->
 
-<!--contacting node http://192.168.10.4:44357/ ...-->
-<!--Pid: 22495-->
-<!--Connections:-->
-<!-- * topic: /tello/image_raw/h264-->
-<!--    * to: /tello/image_compressed-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /rosout-->
-<!--    * to: /rosout-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/land-->
-<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/takeoff-->
-<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/cmd_vel-->
-<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
+<!--<!--contacting node http://192.168.10.4:44357/ ...-->-->
+<!--<!--Pid: 22495-->-->
+<!--<!--Connections:-->-->
+<!--<!-- * topic: /tello/image_raw/h264-->-->
+<!--<!--    * to: /tello/image_compressed-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /rosout-->-->
+<!--<!--    * to: /rosout-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/land-->-->
+<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/takeoff-->-->
+<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/cmd_vel-->-->
+<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
 
-<!--2. rosrun common_tello_application camera_apriltag_detection.py-->
+<!--<!--2. rosrun common_tello_application camera_apriltag_detection.py-->-->
 
-<!--```-->
-<!--Node [/camera_apriltag_detection]-->
-<!--Publications: -->
-<!-- * /isApriltag [std_msgs/Bool]-->
-<!-- * /isApriltag/Center/X [common_tello_application/apriltagC]-->
-<!-- * /isApriltag/Center/Y [common_tello_application/apriltagC]-->
-<!-- * /isApriltag/Corner/X1 [common_tello_application/apriltagCorner]-->
-<!-- * /isApriltag/Corner/X2 [common_tello_application/apriltagCorner]-->
-<!-- * /isApriltag/Corner/X3 [common_tello_application/apriltagCorner]-->
-<!-- * /isApriltag/Corner/X4 [common_tello_application/apriltagCorner]-->
-<!-- * /isApriltag/Corner/Y1 [common_tello_application/apriltagCorner]-->
-<!-- * /isApriltag/Corner/Y2 [common_tello_application/apriltagCorner]-->
-<!-- * /isApriltag/Corner/Y3 [common_tello_application/apriltagCorner]-->
-<!-- * /isApriltag/Corner/Y4 [common_tello_application/apriltagCorner]-->
-<!-- * /isApriltag/Homography/H00 [common_tello_application/apriltagH]-->
-<!-- * /isApriltag/Homography/H01 [common_tello_application/apriltagH]-->
-<!-- * /isApriltag/Homography/H02 [common_tello_application/apriltagH]-->
-<!-- * /isApriltag/Homography/H10 [common_tello_application/apriltagH]-->
-<!-- * /isApriltag/Homography/H11 [common_tello_application/apriltagH]-->
-<!-- * /isApriltag/Homography/H12 [common_tello_application/apriltagH]-->
-<!-- * /isApriltag/Homography/H20 [common_tello_application/apriltagH]-->
-<!-- * /isApriltag/Homography/H21 [common_tello_application/apriltagH]-->
-<!-- * /isApriltag/Homography/H22 [common_tello_application/apriltagH]-->
-<!-- * /isApriltag/N [common_tello_application/apriltagN]-->
-<!-- * /rosout [rosgraph_msgs/Log]-->
+<!--<!--```-->-->
+<!--<!--Node [/camera_apriltag_detection]-->-->
+<!--<!--Publications: -->-->
+<!--<!-- * /isApriltag [std_msgs/Bool]-->-->
+<!--<!-- * /isApriltag/Center/X [common_tello_application/apriltagC]-->-->
+<!--<!-- * /isApriltag/Center/Y [common_tello_application/apriltagC]-->-->
+<!--<!-- * /isApriltag/Corner/X1 [common_tello_application/apriltagCorner]-->-->
+<!--<!-- * /isApriltag/Corner/X2 [common_tello_application/apriltagCorner]-->-->
+<!--<!-- * /isApriltag/Corner/X3 [common_tello_application/apriltagCorner]-->-->
+<!--<!-- * /isApriltag/Corner/X4 [common_tello_application/apriltagCorner]-->-->
+<!--<!-- * /isApriltag/Corner/Y1 [common_tello_application/apriltagCorner]-->-->
+<!--<!-- * /isApriltag/Corner/Y2 [common_tello_application/apriltagCorner]-->-->
+<!--<!-- * /isApriltag/Corner/Y3 [common_tello_application/apriltagCorner]-->-->
+<!--<!-- * /isApriltag/Corner/Y4 [common_tello_application/apriltagCorner]-->-->
+<!--<!-- * /isApriltag/Homography/H00 [common_tello_application/apriltagH]-->-->
+<!--<!-- * /isApriltag/Homography/H01 [common_tello_application/apriltagH]-->-->
+<!--<!-- * /isApriltag/Homography/H02 [common_tello_application/apriltagH]-->-->
+<!--<!-- * /isApriltag/Homography/H10 [common_tello_application/apriltagH]-->-->
+<!--<!-- * /isApriltag/Homography/H11 [common_tello_application/apriltagH]-->-->
+<!--<!-- * /isApriltag/Homography/H12 [common_tello_application/apriltagH]-->-->
+<!--<!-- * /isApriltag/Homography/H20 [common_tello_application/apriltagH]-->-->
+<!--<!-- * /isApriltag/Homography/H21 [common_tello_application/apriltagH]-->-->
+<!--<!-- * /isApriltag/Homography/H22 [common_tello_application/apriltagH]-->-->
+<!--<!-- * /isApriltag/N [common_tello_application/apriltagN]-->-->
+<!--<!-- * /rosout [rosgraph_msgs/Log]-->-->
 
-<!--Subscriptions: -->
-<!-- * /isApriltag/Corner/Distance [unknown type]-->
-<!-- * /tello/image_raw/compressed [sensor_msgs/CompressedImage]-->
-<!-- * /tello/imu [sensor_msgs/Imu]-->
-<!-- * /tello/odom [nav_msgs/Odometry]-->
-<!-- * /tello/status [tello_driver/TelloStatus]-->
+<!--<!--Subscriptions: -->-->
+<!--<!-- * /isApriltag/Corner/Distance [unknown type]-->-->
+<!--<!-- * /tello/image_raw/compressed [sensor_msgs/CompressedImage]-->-->
+<!--<!-- * /tello/imu [sensor_msgs/Imu]-->-->
+<!--<!-- * /tello/odom [nav_msgs/Odometry]-->-->
+<!--<!-- * /tello/status [tello_driver/TelloStatus]-->-->
 
-<!--Services: -->
-<!-- * /camera_apriltag_detection/get_loggers-->
-<!-- * /camera_apriltag_detection/set_logger_level-->
-<!-- ```-->
+<!--<!--Services: -->-->
+<!--<!-- * /camera_apriltag_detection/get_loggers-->-->
+<!--<!-- * /camera_apriltag_detection/set_logger_level-->-->
+<!--<!-- ```-->-->
 
-<!--contacting node http://192.168.10.4:35753/ ...-->
-<!--Pid: 5749-->
-<!--Connections:-->
-<!-- * topic: /rosout-->
-<!--    * to: /rosout-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/odom-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:32969/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/status-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:32969/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/imu-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:32969/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/image_raw/compressed-->
-<!--    * to: /tello/image_compressed (http://192.168.10.4:35055/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
+<!--<!--contacting node http://192.168.10.4:35753/ ...-->-->
+<!--<!--Pid: 5749-->-->
+<!--<!--Connections:-->-->
+<!--<!-- * topic: /rosout-->-->
+<!--<!--    * to: /rosout-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/odom-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:32969/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/status-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:32969/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/imu-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:32969/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/image_raw/compressed-->-->
+<!--<!--    * to: /tello/image_compressed (http://192.168.10.4:35055/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
 
-### camera_apriltag_takeoff_land.py
-- [x] Autonomously takeoff and land based on apriltag 0: Land, 1: Takeoff
+<!--### camera_apriltag_takeoff_land.py-->
+<!--- [x] Autonomously takeoff and land based on apriltag 0: Land, 1: Takeoff-->
 
-<!--1. roslaunch tello_driver tello_node.launch-->
+<!--<!--1. roslaunch tello_driver tello_node.launch-->-->
 
-<!-- ```-->
-<!--Node [/tello/tello_driver_node]-->
-<!--Publications: -->
-<!-- * /rosout [rosgraph_msgs/Log]-->
-<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->
-<!-- * /tello/image_raw/h264 [sensor_msgs/CompressedImage]-->
-<!-- * /tello/imu [sensor_msgs/Imu]-->
-<!-- * /tello/odom [nav_msgs/Odometry]-->
-<!-- * /tello/status [tello_driver/TelloStatus]-->
-<!-- * /tello/tello_driver_node/parameter_descriptions [dynamic_reconfigure/ConfigDescription]-->
-<!-- * /tello/tello_driver_node/parameter_updates [dynamic_reconfigure/Config]-->
+<!--<!-- ```-->-->
+<!--<!--Node [/tello/tello_driver_node]-->-->
+<!--<!--Publications: -->-->
+<!--<!-- * /rosout [rosgraph_msgs/Log]-->-->
+<!--<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->-->
+<!--<!-- * /tello/image_raw/h264 [sensor_msgs/CompressedImage]-->-->
+<!--<!-- * /tello/imu [sensor_msgs/Imu]-->-->
+<!--<!-- * /tello/odom [nav_msgs/Odometry]-->-->
+<!--<!-- * /tello/status [tello_driver/TelloStatus]-->-->
+<!--<!-- * /tello/tello_driver_node/parameter_descriptions [dynamic_reconfigure/ConfigDescription]-->-->
+<!--<!-- * /tello/tello_driver_node/parameter_updates [dynamic_reconfigure/Config]-->-->
 
-<!--Subscriptions: -->
-<!-- * /tello/cmd_vel [geometry_msgs/Twist]-->
-<!-- * /tello/emergency [unknown type]-->
-<!-- * /tello/fast_mode [unknown type]-->
-<!-- * /tello/flattrim [unknown type]-->
-<!-- * /tello/flip [unknown type]-->
-<!-- * /tello/land [std_msgs/Empty]-->
-<!-- * /tello/manual_takeoff [unknown type]-->
-<!-- * /tello/palm_land [unknown type]-->
-<!-- * /tello/takeoff [std_msgs/Empty]-->
-<!-- * /tello/throw_takeoff [unknown type]-->
-<!-- * /tello/video_mode [unknown type]-->
+<!--<!--Subscriptions: -->-->
+<!--<!-- * /tello/cmd_vel [geometry_msgs/Twist]-->-->
+<!--<!-- * /tello/emergency [unknown type]-->-->
+<!--<!-- * /tello/fast_mode [unknown type]-->-->
+<!--<!-- * /tello/flattrim [unknown type]-->-->
+<!--<!-- * /tello/flip [unknown type]-->-->
+<!--<!-- * /tello/land [std_msgs/Empty]-->-->
+<!--<!-- * /tello/manual_takeoff [unknown type]-->-->
+<!--<!-- * /tello/palm_land [unknown type]-->-->
+<!--<!-- * /tello/takeoff [std_msgs/Empty]-->-->
+<!--<!-- * /tello/throw_takeoff [unknown type]-->-->
+<!--<!-- * /tello/video_mode [unknown type]-->-->
 
-<!--Services: -->
-<!-- * /tello/tello_driver_node/get_loggers-->
-<!-- * /tello/tello_driver_node/set_logger_level-->
-<!-- * /tello/tello_driver_node/set_parameters-->
-<!-- ```-->
+<!--<!--Services: -->-->
+<!--<!-- * /tello/tello_driver_node/get_loggers-->-->
+<!--<!-- * /tello/tello_driver_node/set_logger_level-->-->
+<!--<!-- * /tello/tello_driver_node/set_parameters-->-->
+<!--<!-- ```-->-->
 
-<!--contacting node http://192.168.10.4:44357/ ...-->
-<!--Pid: 22495-->
-<!--Connections:-->
-<!-- * topic: /tello/image_raw/h264-->
-<!--    * to: /tello/image_compressed-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /rosout-->
-<!--    * to: /rosout-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/land-->
-<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/takeoff-->
-<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/cmd_vel-->
-<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
- 
-<!--2. rosrun common_tello_application camera_apriltag_takeoff_land.py-->
-
-<!--```-->
-<!--Node [/camera_apriltag_takeoff_land]-->
-<!--Publications: -->
-<!-- * /rosout [rosgraph_msgs/Log]-->
-<!-- * /tello/land [std_msgs/Empty]-->
-<!-- * /tello/takeoff [std_msgs/Empty]-->
-
-<!--Subscriptions: -->
-<!-- * /isApriltag [std_msgs/Bool]-->
-<!-- * /isApriltag/N [common_tello_application/apriltagN]-->
-<!-- * /tello/imu [sensor_msgs/Imu]-->
-<!-- * /tello/odom [nav_msgs/Odometry]-->
-<!-- * /tello/status [tello_driver/TelloStatus]-->
-
-<!--Services: -->
-<!-- * /camera_apriltag_takeoff_land/get_loggers-->
-<!-- * /camera_apriltag_takeoff_land/set_logger_level-->
-<!--```-->
-
-<!--contacting node http://192.168.10.4:34283/ ...-->
-<!--Pid: 3465-->
-<!--Connections:-->
-<!-- * topic: /tello/land-->
-<!--    * to: /tello/tello_driver_node-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /rosout-->
-<!--    * to: /rosout-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/takeoff-->
-<!--    * to: /tello/tello_driver_node-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/odom-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33715/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/status-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33715/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag-->
-<!--    * to: /camera_apriltag_detection (http://192.168.10.4:38191/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag/N-->
-<!--    * to: /camera_apriltag_detection (http://192.168.10.4:38191/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/imu-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33715/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-
-### camera_apriltag_center.py
-- [x] Detect, recognize apriltag and publish the center
-
-<!--1. roslaunch tello_driver tello_node.launch-->
-
-<!-- ```-->
-<!--Node [/tello/tello_driver_node]-->
-<!--Publications: -->
-<!-- * /rosout [rosgraph_msgs/Log]-->
-<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->
-<!-- * /tello/image_raw/h264 [sensor_msgs/CompressedImage]-->
-<!-- * /tello/imu [sensor_msgs/Imu]-->
-<!-- * /tello/odom [nav_msgs/Odometry]-->
-<!-- * /tello/status [tello_driver/TelloStatus]-->
-<!-- * /tello/tello_driver_node/parameter_descriptions [dynamic_reconfigure/ConfigDescription]-->
-<!-- * /tello/tello_driver_node/parameter_updates [dynamic_reconfigure/Config]-->
-
-<!--Subscriptions: -->
-<!-- * /tello/cmd_vel [geometry_msgs/Twist]-->
-<!-- * /tello/emergency [unknown type]-->
-<!-- * /tello/fast_mode [unknown type]-->
-<!-- * /tello/flattrim [unknown type]-->
-<!-- * /tello/flip [unknown type]-->
-<!-- * /tello/land [std_msgs/Empty]-->
-<!-- * /tello/manual_takeoff [unknown type]-->
-<!-- * /tello/palm_land [unknown type]-->
-<!-- * /tello/takeoff [std_msgs/Empty]-->
-<!-- * /tello/throw_takeoff [unknown type]-->
-<!-- * /tello/video_mode [unknown type]-->
-
-<!--Services: -->
-<!-- * /tello/tello_driver_node/get_loggers-->
-<!-- * /tello/tello_driver_node/set_logger_level-->
-<!-- * /tello/tello_driver_node/set_parameters-->
-
-
-<!--contacting node http://192.168.10.4:44357/ ...-->
-<!--Pid: 22495-->
-<!--Connections:-->
-<!-- * topic: /tello/image_raw/h264-->
-<!--    * to: /tello/image_compressed-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /rosout-->
-<!--    * to: /rosout-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/land-->
-<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/takeoff-->
-<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/cmd_vel-->
-<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- ```-->
+<!--<!--contacting node http://192.168.10.4:44357/ ...-->-->
+<!--<!--Pid: 22495-->-->
+<!--<!--Connections:-->-->
+<!--<!-- * topic: /tello/image_raw/h264-->-->
+<!--<!--    * to: /tello/image_compressed-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /rosout-->-->
+<!--<!--    * to: /rosout-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/land-->-->
+<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/takeoff-->-->
+<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/cmd_vel-->-->
+<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
 <!-- -->
-<!--2. rosrun common_tello_application camera_apriltag_center.py-->
+<!--<!--2. rosrun common_tello_application camera_apriltag_takeoff_land.py-->-->
 
-<!--```-->
-<!--Node [/camera_apriltag_center]-->
-<!--Publications: -->
-<!-- * /isApriltag/objCoord [common_tello_application/objCenter]-->
-<!-- * /rosout [rosgraph_msgs/Log]-->
+<!--<!--```-->-->
+<!--<!--Node [/camera_apriltag_takeoff_land]-->-->
+<!--<!--Publications: -->-->
+<!--<!-- * /rosout [rosgraph_msgs/Log]-->-->
+<!--<!-- * /tello/land [std_msgs/Empty]-->-->
+<!--<!-- * /tello/takeoff [std_msgs/Empty]-->-->
 
-<!--Subscriptions: -->
-<!-- * /isApriltag [std_msgs/Bool]-->
-<!-- * /isApriltag/Center/X [common_tello_application/apriltagC]-->
-<!-- * /isApriltag/Center/Y [common_tello_application/apriltagC]-->
-<!-- * /isApriltag/N [common_tello_application/apriltagN]-->
-<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->
-<!-- * /tello/imu [sensor_msgs/Imu]-->
-<!-- * /tello/odom [nav_msgs/Odometry]-->
-<!-- * /tello/status [tello_driver/TelloStatus]-->
+<!--<!--Subscriptions: -->-->
+<!--<!-- * /isApriltag [std_msgs/Bool]-->-->
+<!--<!-- * /isApriltag/N [common_tello_application/apriltagN]-->-->
+<!--<!-- * /tello/imu [sensor_msgs/Imu]-->-->
+<!--<!-- * /tello/odom [nav_msgs/Odometry]-->-->
+<!--<!-- * /tello/status [tello_driver/TelloStatus]-->-->
 
-<!--Services: -->
-<!-- * /camera_apriltag_center/get_loggers-->
-<!-- * /camera_apriltag_center/set_logger_level-->
+<!--<!--Services: -->-->
+<!--<!-- * /camera_apriltag_takeoff_land/get_loggers-->-->
+<!--<!-- * /camera_apriltag_takeoff_land/set_logger_level-->-->
+<!--<!--```-->-->
 
+<!--<!--contacting node http://192.168.10.4:34283/ ...-->-->
+<!--<!--Pid: 3465-->-->
+<!--<!--Connections:-->-->
+<!--<!-- * topic: /tello/land-->-->
+<!--<!--    * to: /tello/tello_driver_node-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /rosout-->-->
+<!--<!--    * to: /rosout-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/takeoff-->-->
+<!--<!--    * to: /tello/tello_driver_node-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/odom-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33715/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/status-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33715/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag-->-->
+<!--<!--    * to: /camera_apriltag_detection (http://192.168.10.4:38191/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag/N-->-->
+<!--<!--    * to: /camera_apriltag_detection (http://192.168.10.4:38191/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/imu-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33715/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
 
-<!--contacting node http://192.168.10.4:39107/ ...-->
-<!--Pid: 8126-->
-<!--Connections:-->
-<!-- * topic: /rosout-->
-<!--    * to: /rosout-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/odom-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag-->
-<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag/N-->
-<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/imu-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag/Center/X-->
-<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag/Center/Y-->
-<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/status-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/camera/camera_info-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!--```-->
+<!--### camera_apriltag_center.py-->
+<!--- [x] Detect, recognize apriltag and publish the center-->
 
-### camera_apriltag_tracking.py
-- [x] Tracking the detected apriltag; keep the apriltag on center of image. Applying PID controller.
+<!--<!--1. roslaunch tello_driver tello_node.launch-->-->
 
-<!--1. roslaunch tello_driver tello_node.launch-->
+<!--<!-- ```-->-->
+<!--<!--Node [/tello/tello_driver_node]-->-->
+<!--<!--Publications: -->-->
+<!--<!-- * /rosout [rosgraph_msgs/Log]-->-->
+<!--<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->-->
+<!--<!-- * /tello/image_raw/h264 [sensor_msgs/CompressedImage]-->-->
+<!--<!-- * /tello/imu [sensor_msgs/Imu]-->-->
+<!--<!-- * /tello/odom [nav_msgs/Odometry]-->-->
+<!--<!-- * /tello/status [tello_driver/TelloStatus]-->-->
+<!--<!-- * /tello/tello_driver_node/parameter_descriptions [dynamic_reconfigure/ConfigDescription]-->-->
+<!--<!-- * /tello/tello_driver_node/parameter_updates [dynamic_reconfigure/Config]-->-->
 
-<!-- ```-->
-<!--Node [/tello/tello_driver_node]-->
-<!--Publications: -->
-<!-- * /rosout [rosgraph_msgs/Log]-->
-<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->
-<!-- * /tello/image_raw/h264 [sensor_msgs/CompressedImage]-->
-<!-- * /tello/imu [sensor_msgs/Imu]-->
-<!-- * /tello/odom [nav_msgs/Odometry]-->
-<!-- * /tello/status [tello_driver/TelloStatus]-->
-<!-- * /tello/tello_driver_node/parameter_descriptions [dynamic_reconfigure/ConfigDescription]-->
-<!-- * /tello/tello_driver_node/parameter_updates [dynamic_reconfigure/Config]-->
+<!--<!--Subscriptions: -->-->
+<!--<!-- * /tello/cmd_vel [geometry_msgs/Twist]-->-->
+<!--<!-- * /tello/emergency [unknown type]-->-->
+<!--<!-- * /tello/fast_mode [unknown type]-->-->
+<!--<!-- * /tello/flattrim [unknown type]-->-->
+<!--<!-- * /tello/flip [unknown type]-->-->
+<!--<!-- * /tello/land [std_msgs/Empty]-->-->
+<!--<!-- * /tello/manual_takeoff [unknown type]-->-->
+<!--<!-- * /tello/palm_land [unknown type]-->-->
+<!--<!-- * /tello/takeoff [std_msgs/Empty]-->-->
+<!--<!-- * /tello/throw_takeoff [unknown type]-->-->
+<!--<!-- * /tello/video_mode [unknown type]-->-->
 
-<!--Subscriptions: -->
-<!-- * /tello/cmd_vel [geometry_msgs/Twist]-->
-<!-- * /tello/emergency [unknown type]-->
-<!-- * /tello/fast_mode [unknown type]-->
-<!-- * /tello/flattrim [unknown type]-->
-<!-- * /tello/flip [unknown type]-->
-<!-- * /tello/land [std_msgs/Empty]-->
-<!-- * /tello/manual_takeoff [unknown type]-->
-<!-- * /tello/palm_land [unknown type]-->
-<!-- * /tello/takeoff [std_msgs/Empty]-->
-<!-- * /tello/throw_takeoff [unknown type]-->
-<!-- * /tello/video_mode [unknown type]-->
-
-<!--Services: -->
-<!-- * /tello/tello_driver_node/get_loggers-->
-<!-- * /tello/tello_driver_node/set_logger_level-->
-<!-- * /tello/tello_driver_node/set_parameters-->
+<!--<!--Services: -->-->
+<!--<!-- * /tello/tello_driver_node/get_loggers-->-->
+<!--<!-- * /tello/tello_driver_node/set_logger_level-->-->
+<!--<!-- * /tello/tello_driver_node/set_parameters-->-->
 
 
-<!--contacting node http://192.168.10.4:44357/ ...-->
-<!--Pid: 22495-->
-<!--Connections:-->
-<!-- * topic: /tello/image_raw/h264-->
-<!--    * to: /tello/image_compressed-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /rosout-->
-<!--    * to: /rosout-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/land-->
-<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/takeoff-->
-<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/cmd_vel-->
-<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- ```-->
-<!-- -->
-<!--2. rosrun common_tello_application camera_apriltag_takeoff_land.py-->
+<!--<!--contacting node http://192.168.10.4:44357/ ...-->-->
+<!--<!--Pid: 22495-->-->
+<!--<!--Connections:-->-->
+<!--<!-- * topic: /tello/image_raw/h264-->-->
+<!--<!--    * to: /tello/image_compressed-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /rosout-->-->
+<!--<!--    * to: /rosout-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/land-->-->
+<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/takeoff-->-->
+<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/cmd_vel-->-->
+<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- ```-->-->
+<!--<!-- -->-->
+<!--<!--2. rosrun common_tello_application camera_apriltag_center.py-->-->
 
-<!--```-->
-<!--Node [/camera_apriltag_takeoff_land]-->
-<!--Publications: -->
-<!-- * /rosout [rosgraph_msgs/Log]-->
-<!-- * /tello/land [std_msgs/Empty]-->
-<!-- * /tello/takeoff [std_msgs/Empty]-->
+<!--<!--```-->-->
+<!--<!--Node [/camera_apriltag_center]-->-->
+<!--<!--Publications: -->-->
+<!--<!-- * /isApriltag/objCoord [common_tello_application/objCenter]-->-->
+<!--<!-- * /rosout [rosgraph_msgs/Log]-->-->
 
-<!--Subscriptions: -->
-<!-- * /isApriltag [std_msgs/Bool]-->
-<!-- * /isApriltag/N [common_tello_application/apriltagN]-->
-<!-- * /tello/imu [sensor_msgs/Imu]-->
-<!-- * /tello/odom [nav_msgs/Odometry]-->
-<!-- * /tello/status [tello_driver/TelloStatus]-->
+<!--<!--Subscriptions: -->-->
+<!--<!-- * /isApriltag [std_msgs/Bool]-->-->
+<!--<!-- * /isApriltag/Center/X [common_tello_application/apriltagC]-->-->
+<!--<!-- * /isApriltag/Center/Y [common_tello_application/apriltagC]-->-->
+<!--<!-- * /isApriltag/N [common_tello_application/apriltagN]-->-->
+<!--<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->-->
+<!--<!-- * /tello/imu [sensor_msgs/Imu]-->-->
+<!--<!-- * /tello/odom [nav_msgs/Odometry]-->-->
+<!--<!-- * /tello/status [tello_driver/TelloStatus]-->-->
 
-<!--Services: -->
-<!-- * /camera_apriltag_takeoff_land/get_loggers-->
-<!-- * /camera_apriltag_takeoff_land/set_logger_level-->
-
-
-<!--contacting node http://192.168.10.4:34283/ ...-->
-<!--Pid: 3465-->
-<!--Connections:-->
-<!-- * topic: /tello/land-->
-<!--    * to: /tello/tello_driver_node-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /rosout-->
-<!--    * to: /rosout-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/takeoff-->
-<!--    * to: /tello/tello_driver_node-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/odom-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33715/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/status-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33715/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag-->
-<!--    * to: /camera_apriltag_detection (http://192.168.10.4:38191/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag/N-->
-<!--    * to: /camera_apriltag_detection (http://192.168.10.4:38191/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/imu-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33715/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!--```-->
-
-<!--3. rosrun common_tello_application camera_apriltag_center.py-->
-
-<!--```-->
-<!--Node [/camera_apriltag_center]-->
-<!--Publications: -->
-<!-- * /isApriltag/objCoord [common_tello_application/objCenter]-->
-<!-- * /rosout [rosgraph_msgs/Log]-->
-
-<!--Subscriptions: -->
-<!-- * /isApriltag [std_msgs/Bool]-->
-<!-- * /isApriltag/Center/X [common_tello_application/apriltagC]-->
-<!-- * /isApriltag/Center/Y [common_tello_application/apriltagC]-->
-<!-- * /isApriltag/N [common_tello_application/apriltagN]-->
-<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->
-<!-- * /tello/imu [sensor_msgs/Imu]-->
-<!-- * /tello/odom [nav_msgs/Odometry]-->
-<!-- * /tello/status [tello_driver/TelloStatus]-->
-
-<!--Services: -->
-<!-- * /camera_apriltag_center/get_loggers-->
-<!-- * /camera_apriltag_center/set_logger_level-->
+<!--<!--Services: -->-->
+<!--<!-- * /camera_apriltag_center/get_loggers-->-->
+<!--<!-- * /camera_apriltag_center/set_logger_level-->-->
 
 
-<!--contacting node http://192.168.10.4:39107/ ...-->
-<!--Pid: 8126-->
-<!--Connections:-->
-<!-- * topic: /rosout-->
-<!--    * to: /rosout-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/odom-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag-->
-<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag/N-->
-<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/imu-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag/Center/X-->
-<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag/Center/Y-->
-<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/status-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/camera/camera_info-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!--```-->
+<!--<!--contacting node http://192.168.10.4:39107/ ...-->-->
+<!--<!--Pid: 8126-->-->
+<!--<!--Connections:-->-->
+<!--<!-- * topic: /rosout-->-->
+<!--<!--    * to: /rosout-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/odom-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag-->-->
+<!--<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag/N-->-->
+<!--<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/imu-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag/Center/X-->-->
+<!--<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag/Center/Y-->-->
+<!--<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/status-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/camera/camera_info-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!--```-->-->
 
-<!--4. rosrun common_tello_application camera_apriltag_tracking.py-->
+<!--### camera_apriltag_tracking.py-->
+<!--- [x] Tracking the detected apriltag; keep the apriltag on center of image. Applying PID controller.-->
 
-<!--```-->
-<!--Node [/camera_apriltag_tracking]-->
-<!--Publications: -->
-<!-- * /rosout [rosgraph_msgs/Log]-->
-<!-- * /tello/cmd_vel [geometry_msgs/Twist]-->
+<!--<!--1. roslaunch tello_driver tello_node.launch-->-->
 
-<!--Subscriptions: -->
-<!-- * /isApriltag [std_msgs/Bool]-->
-<!-- * /isApriltag/N [common_tello_application/apriltagN]-->
-<!-- * /isApriltag/objCoord [common_tello_application/objCenter]-->
-<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->
-<!-- * /tello/imu [sensor_msgs/Imu]-->
-<!-- * /tello/odom [nav_msgs/Odometry]-->
-<!-- * /tello/status [tello_driver/TelloStatus]-->
+<!--<!-- ```-->-->
+<!--<!--Node [/tello/tello_driver_node]-->-->
+<!--<!--Publications: -->-->
+<!--<!-- * /rosout [rosgraph_msgs/Log]-->-->
+<!--<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->-->
+<!--<!-- * /tello/image_raw/h264 [sensor_msgs/CompressedImage]-->-->
+<!--<!-- * /tello/imu [sensor_msgs/Imu]-->-->
+<!--<!-- * /tello/odom [nav_msgs/Odometry]-->-->
+<!--<!-- * /tello/status [tello_driver/TelloStatus]-->-->
+<!--<!-- * /tello/tello_driver_node/parameter_descriptions [dynamic_reconfigure/ConfigDescription]-->-->
+<!--<!-- * /tello/tello_driver_node/parameter_updates [dynamic_reconfigure/Config]-->-->
 
-<!--Services: -->
-<!-- * /camera_apriltag_tracking/get_loggers-->
-<!-- * /camera_apriltag_tracking/set_logger_level-->
+<!--<!--Subscriptions: -->-->
+<!--<!-- * /tello/cmd_vel [geometry_msgs/Twist]-->-->
+<!--<!-- * /tello/emergency [unknown type]-->-->
+<!--<!-- * /tello/fast_mode [unknown type]-->-->
+<!--<!-- * /tello/flattrim [unknown type]-->-->
+<!--<!-- * /tello/flip [unknown type]-->-->
+<!--<!-- * /tello/land [std_msgs/Empty]-->-->
+<!--<!-- * /tello/manual_takeoff [unknown type]-->-->
+<!--<!-- * /tello/palm_land [unknown type]-->-->
+<!--<!-- * /tello/takeoff [std_msgs/Empty]-->-->
+<!--<!-- * /tello/throw_takeoff [unknown type]-->-->
+<!--<!-- * /tello/video_mode [unknown type]-->-->
+
+<!--<!--Services: -->-->
+<!--<!-- * /tello/tello_driver_node/get_loggers-->-->
+<!--<!-- * /tello/tello_driver_node/set_logger_level-->-->
+<!--<!-- * /tello/tello_driver_node/set_parameters-->-->
 
 
-<!--contacting node http://192.168.10.4:33737/ ...-->
-<!--Pid: 16997-->
-<!--Connections:-->
-<!-- * topic: /rosout-->
-<!--    * to: /rosout-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/cmd_vel-->
-<!--    * to: /tello/tello_driver_node-->
-<!--    * direction: outbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag/objCoord-->
-<!--    * to: /camera_apriltag_center (http://192.168.10.4:33579/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/odom-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33027/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag-->
-<!--    * to: /camera_apriltag_detection (http://192.168.10.4:45625/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/imu-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33027/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /isApriltag/N-->
-<!--    * to: /camera_apriltag_detection (http://192.168.10.4:45625/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/status-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33027/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!-- * topic: /tello/camera/camera_info-->
-<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33027/)-->
-<!--    * direction: inbound-->
-<!--    * transport: TCPROS-->
-<!--```-->
+<!--<!--contacting node http://192.168.10.4:44357/ ...-->-->
+<!--<!--Pid: 22495-->-->
+<!--<!--Connections:-->-->
+<!--<!-- * topic: /tello/image_raw/h264-->-->
+<!--<!--    * to: /tello/image_compressed-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /rosout-->-->
+<!--<!--    * to: /rosout-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/land-->-->
+<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/takeoff-->-->
+<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/cmd_vel-->-->
+<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- ```-->-->
+<!--<!-- -->-->
+<!--<!--2. rosrun common_tello_application camera_apriltag_takeoff_land.py-->-->
+
+<!--<!--```-->-->
+<!--<!--Node [/camera_apriltag_takeoff_land]-->-->
+<!--<!--Publications: -->-->
+<!--<!-- * /rosout [rosgraph_msgs/Log]-->-->
+<!--<!-- * /tello/land [std_msgs/Empty]-->-->
+<!--<!-- * /tello/takeoff [std_msgs/Empty]-->-->
+
+<!--<!--Subscriptions: -->-->
+<!--<!-- * /isApriltag [std_msgs/Bool]-->-->
+<!--<!-- * /isApriltag/N [common_tello_application/apriltagN]-->-->
+<!--<!-- * /tello/imu [sensor_msgs/Imu]-->-->
+<!--<!-- * /tello/odom [nav_msgs/Odometry]-->-->
+<!--<!-- * /tello/status [tello_driver/TelloStatus]-->-->
+
+<!--<!--Services: -->-->
+<!--<!-- * /camera_apriltag_takeoff_land/get_loggers-->-->
+<!--<!-- * /camera_apriltag_takeoff_land/set_logger_level-->-->
+
+
+<!--<!--contacting node http://192.168.10.4:34283/ ...-->-->
+<!--<!--Pid: 3465-->-->
+<!--<!--Connections:-->-->
+<!--<!-- * topic: /tello/land-->-->
+<!--<!--    * to: /tello/tello_driver_node-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /rosout-->-->
+<!--<!--    * to: /rosout-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/takeoff-->-->
+<!--<!--    * to: /tello/tello_driver_node-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/odom-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33715/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/status-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33715/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag-->-->
+<!--<!--    * to: /camera_apriltag_detection (http://192.168.10.4:38191/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag/N-->-->
+<!--<!--    * to: /camera_apriltag_detection (http://192.168.10.4:38191/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/imu-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33715/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!--```-->-->
+
+<!--<!--3. rosrun common_tello_application camera_apriltag_center.py-->-->
+
+<!--<!--```-->-->
+<!--<!--Node [/camera_apriltag_center]-->-->
+<!--<!--Publications: -->-->
+<!--<!-- * /isApriltag/objCoord [common_tello_application/objCenter]-->-->
+<!--<!-- * /rosout [rosgraph_msgs/Log]-->-->
+
+<!--<!--Subscriptions: -->-->
+<!--<!-- * /isApriltag [std_msgs/Bool]-->-->
+<!--<!-- * /isApriltag/Center/X [common_tello_application/apriltagC]-->-->
+<!--<!-- * /isApriltag/Center/Y [common_tello_application/apriltagC]-->-->
+<!--<!-- * /isApriltag/N [common_tello_application/apriltagN]-->-->
+<!--<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->-->
+<!--<!-- * /tello/imu [sensor_msgs/Imu]-->-->
+<!--<!-- * /tello/odom [nav_msgs/Odometry]-->-->
+<!--<!-- * /tello/status [tello_driver/TelloStatus]-->-->
+
+<!--<!--Services: -->-->
+<!--<!-- * /camera_apriltag_center/get_loggers-->-->
+<!--<!-- * /camera_apriltag_center/set_logger_level-->-->
+
+
+<!--<!--contacting node http://192.168.10.4:39107/ ...-->-->
+<!--<!--Pid: 8126-->-->
+<!--<!--Connections:-->-->
+<!--<!-- * topic: /rosout-->-->
+<!--<!--    * to: /rosout-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/odom-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag-->-->
+<!--<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag/N-->-->
+<!--<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/imu-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag/Center/X-->-->
+<!--<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag/Center/Y-->-->
+<!--<!--    * to: /camera_apriltag_detection (http://192.168.10.4:46621/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/status-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/camera/camera_info-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:36965/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!--```-->-->
+
+<!--<!--4. rosrun common_tello_application camera_apriltag_tracking.py-->-->
+
+<!--<!--```-->-->
+<!--<!--Node [/camera_apriltag_tracking]-->-->
+<!--<!--Publications: -->-->
+<!--<!-- * /rosout [rosgraph_msgs/Log]-->-->
+<!--<!-- * /tello/cmd_vel [geometry_msgs/Twist]-->-->
+
+<!--<!--Subscriptions: -->-->
+<!--<!-- * /isApriltag [std_msgs/Bool]-->-->
+<!--<!-- * /isApriltag/N [common_tello_application/apriltagN]-->-->
+<!--<!-- * /isApriltag/objCoord [common_tello_application/objCenter]-->-->
+<!--<!-- * /tello/camera/camera_info [sensor_msgs/CameraInfo]-->-->
+<!--<!-- * /tello/imu [sensor_msgs/Imu]-->-->
+<!--<!-- * /tello/odom [nav_msgs/Odometry]-->-->
+<!--<!-- * /tello/status [tello_driver/TelloStatus]-->-->
+
+<!--<!--Services: -->-->
+<!--<!-- * /camera_apriltag_tracking/get_loggers-->-->
+<!--<!-- * /camera_apriltag_tracking/set_logger_level-->-->
+
+
+<!--<!--contacting node http://192.168.10.4:33737/ ...-->-->
+<!--<!--Pid: 16997-->-->
+<!--<!--Connections:-->-->
+<!--<!-- * topic: /rosout-->-->
+<!--<!--    * to: /rosout-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/cmd_vel-->-->
+<!--<!--    * to: /tello/tello_driver_node-->-->
+<!--<!--    * direction: outbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag/objCoord-->-->
+<!--<!--    * to: /camera_apriltag_center (http://192.168.10.4:33579/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/odom-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33027/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag-->-->
+<!--<!--    * to: /camera_apriltag_detection (http://192.168.10.4:45625/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/imu-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33027/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /isApriltag/N-->-->
+<!--<!--    * to: /camera_apriltag_detection (http://192.168.10.4:45625/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/status-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33027/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!-- * topic: /tello/camera/camera_info-->-->
+<!--<!--    * to: /tello/tello_driver_node (http://192.168.10.4:33027/)-->-->
+<!--<!--    * direction: inbound-->-->
+<!--<!--    * transport: TCPROS-->-->
+<!--<!--```-->-->
