@@ -197,29 +197,29 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 <!-- * /tello/tello_driver_node/set_parameters-->
 <!-- ```-->
 
-<!--<!--contacting node http://192.168.10.4:44357/ ...-->-->
-<!--<!--Pid: 22495-->-->
-<!--<!--Connections:-->-->
-<!--<!-- * topic: /tello/image_raw/h264-->-->
-<!--<!--    * to: /tello/image_compressed-->-->
-<!--<!--    * direction: outbound-->-->
-<!--<!--    * transport: TCPROS-->-->
-<!--<!-- * topic: /rosout-->-->
-<!--<!--    * to: /rosout-->-->
-<!--<!--    * direction: outbound-->-->
-<!--<!--    * transport: TCPROS-->-->
-<!--<!-- * topic: /tello/land-->-->
-<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
-<!--<!--    * direction: inbound-->-->
-<!--<!--    * transport: TCPROS-->-->
-<!--<!-- * topic: /tello/takeoff-->-->
-<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
-<!--<!--    * direction: inbound-->-->
-<!--<!--    * transport: TCPROS-->-->
-<!--<!-- * topic: /tello/cmd_vel-->-->
-<!--<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->-->
-<!--<!--    * direction: inbound-->-->
-<!--<!--    * transport: TCPROS-->-->
+<!--contacting node http://192.168.10.4:44357/ ...-->
+<!--Pid: 22495-->
+<!--Connections:-->
+<!-- * topic: /tello/image_raw/h264-->
+<!--    * to: /tello/image_compressed-->
+<!--    * direction: outbound-->
+<!--    * transport: TCPROS-->
+<!-- * topic: /rosout-->
+<!--    * to: /rosout-->
+<!--    * direction: outbound-->
+<!--    * transport: TCPROS-->
+<!-- * topic: /tello/land-->
+<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
+<!--    * direction: inbound-->
+<!--    * transport: TCPROS-->
+<!-- * topic: /tello/takeoff-->
+<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
+<!--    * direction: inbound-->
+<!--    * transport: TCPROS-->
+<!-- * topic: /tello/cmd_vel-->
+<!--    * to: /tello_teleop (http://192.168.10.4:46683/)-->
+<!--    * direction: inbound-->
+<!--    * transport: TCPROS-->
 <!-- -->
 <!--2. rosrun common_tello_application tello_teleop_key.py-->
 
@@ -238,25 +238,25 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 <!-- * /tello_teleop/set_logger_level-->
 <!--```-->
 
-<!--<!--contacting node http://192.168.10.4:46683/ ...-->-->
-<!--<!--Pid: 22639-->-->
-<!--<!--Connections:-->-->
-<!--<!-- * topic: /tello/land-->-->
-<!--<!--    * to: /tello/tello_driver_node-->-->
-<!--<!--    * direction: outbound-->-->
-<!--<!--    * transport: TCPROS-->-->
-<!--<!-- * topic: /rosout-->-->
-<!--<!--    * to: /rosout-->-->
-<!--<!--    * direction: outbound-->-->
-<!--<!--    * transport: TCPROS-->-->
-<!--<!-- * topic: /tello/takeoff-->-->
-<!--<!--    * to: /tello/tello_driver_node-->-->
-<!--<!--    * direction: outbound-->-->
-<!--<!--    * transport: TCPROS-->-->
-<!--<!-- * topic: /tello/cmd_vel-->-->
-<!--<!--    * to: /tello/tello_driver_node-->-->
-<!--<!--    * direction: outbound-->-->
-<!--<!--    * transport: TCPROS-->-->
+<!--contacting node http://192.168.10.4:46683/ ...-->
+<!--Pid: 22639-->
+<!--Connections:-->
+<!-- * topic: /tello/land-->
+<!--    * to: /tello/tello_driver_node-->
+<!--    * direction: outbound-->
+<!--    * transport: TCPROS-->
+<!-- * topic: /rosout-->
+<!--    * to: /rosout-->
+<!--    * direction: outbound-->
+<!--    * transport: TCPROS-->
+<!-- * topic: /tello/takeoff-->
+<!--    * to: /tello/tello_driver_node-->
+<!--    * direction: outbound-->
+<!--    * transport: TCPROS-->
+<!-- * topic: /tello/cmd_vel-->
+<!--    * to: /tello/tello_driver_node-->
+<!--    * direction: outbound-->
+<!--    * transport: TCPROS-->
 
 ### camera_preview.py
 - [x] Preview an image stream from tello
