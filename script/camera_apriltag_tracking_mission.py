@@ -19,8 +19,15 @@ import random
 import apriltag
 
 # import the necessary ROS packages
-from std_msgs.msg import String, Float32, Bool, UInt8
-from sensor_msgs.msg import Image, CameraInfo, CompressedImage
+from std_msgs.msg import String
+from std_msgs.msg import Float32
+from std_msgs.msg import Bool
+from std_msgs.msg import UInt8
+from std_msgs.msg import Empty
+
+from sensor_msgs.msg import Image
+from sensor_msgs.msg import CameraInfo
+from sensor_msgs.msg import  CompressedImage
 
 from cv_bridge import CvBridge
 from cv_bridge import CvBridgeError
@@ -43,8 +50,6 @@ import rospy
 from common_tello_application.msg import apriltagN as apriltagList
 from common_tello_application.msg import arrayHomo as apriltagHomographyMat
 from common_tello_application.msg import apriltagDistance
-
-from std_msgs.msg import Empty
 
 class CameraAprilTag:
 	def __init__(self):
@@ -856,24 +861,18 @@ class CameraAprilTag:
 				if not self.isApriltagN:
 #					pass
 					if self.state == False:
-						if float(self.height_m) > 1.5:
-							rospy.loginfo("Done 2!")
-							self.telloCmdVel.linear.z = 0.0
-							self.telloLand_pub.publish(self.land)
-							rospy.logwarn("LANDING...")
-						elif float(self.height_m) < 1.5:
-							rospy.loginfo("UP!")	
-							self.telloCmdVel.linear.z = 0.4
-
 						self.telloCmdVel.linear.x = 0.0
 						self.telloCmdVel.linear.y = 0.0
-#						self.telloCmdVel.linear.z = 0.0
+						self.telloCmdVel.linear.z = 0.0
 					
 						self.telloCmdVel.angular.x = 0.0
 						self.telloCmdVel.angular.x = 0.0
 						self.telloCmdVel.angular.z = 0.0
 
 						self.telloCmdVel_pub.publish(self.telloCmdVel)
+
+					else:
+						pass
 
 				# is AprilTag3 detected listed? : True
 				else:
@@ -886,6 +885,7 @@ class CameraAprilTag:
 						self.telloCmdVel.angular.x = 0.0
 						self.telloCmdVel.angular.y = 0.0
 						self.telloCmdVel.angular.z = 0.0
+
 						self.telloCmdVel_pub.publish(self.telloCmdVel)
 
 					# is AprilTag3 detected listed it NOT 0 : Takeoff or 1 : Land
@@ -972,46 +972,32 @@ class CameraAprilTag:
 								self.state = False
 								rospy.logerr("ARRIVED...")
 
-							# Angular speed
+#							self.telloCmdVel.linear.x = 0.0
+							self.telloCmdVel.linear.y = 0.0
+#							self.telloCmdVel.linear.z = 0.0
+							
 							self.telloCmdVel.angular.x = 0.0
 							self.telloCmdVel.angular.y = 0.0
+#							self.telloCmdVel.angular.z = 0.0
 
 							self.telloCmdVel_pub.publish(self.telloCmdVel)
 
 						elif self.state == False:
-#							if float(self.height_m) > 1.5:
-#								self.telloCmdVel.linear.z = 0.0
-#								self.telloLand_pub.publish(self.land)
-#								rospy.logwarn("LANDING...")
-#							elif float(self.height_m) < 1.5:
-#								rospy.loginfo("UP!")	
-#								self.telloCmdVel.linear.z = 0.4
-
 							self.telloCmdVel.linear.x = 0.0
 							self.telloCmdVel.linear.y = 0.0
 							self.telloCmdVel.linear.z = 0.0
 							
 							self.telloCmdVel.angular.x = 0.0
-							self.telloCmdVel.angular.x = 0.0
+							self.telloCmdVel.angular.y = 0.0
 							self.telloCmdVel.angular.z = 0.0
 
 							self.telloCmdVel_pub.publish(self.telloCmdVel)
+
+							self.flip.data = 0
+							self.telloFlip_pub.publish(self.flip)
+
 							self.telloLand_pub.publish(self.land)
 							rospy.logwarn("LANDING...")
-
-#						elif self.stateLand == True:
-#							self.telloCmdVel.linear.x = 0.0
-#							self.telloCmdVel.linear.y = 0.0
-##							self.telloCmdVel.linear.z = 0.0
-#							
-#							self.telloCmdVel.angular.x = 0.0
-#							self.telloCmdVel.angular.x = 0.0
-#							self.telloCmdVel.angular.z = 0.0
-
-#							self.telloCmdVel_pub.publish(self.telloCmdVel)
-#							self.telloLand_pub.publish(self.land)
-#							rospy.logwarn("LANDING...")
-#							self.stateLand = False
 
 						else:
 							self.telloCmdVel.linear.x = 0.0
@@ -1019,7 +1005,7 @@ class CameraAprilTag:
 							self.telloCmdVel.linear.z = 0.0
 							
 							self.telloCmdVel.angular.x = 0.0
-							self.telloCmdVel.angular.x = 0.0
+							self.telloCmdVel.angular.y = 0.0
 							self.telloCmdVel.angular.z = 0.0
 
 							self.telloCmdVel_pub.publish(self.telloCmdVel)
