@@ -75,32 +75,58 @@ A project to understand and controlling the **tello** with **ROS** and **Python*
         ├── pid.py
         └── pid.pyc
 ```
-## System Requirement
-1. Ubuntu 16.04
-2. ROS Kinetic
 
-# Required Packages/Library
-1. Tello Driver: 
-	1. https://github.com/KhairulIzwan/tello_driver.git
+## System Requirement (Setup)
+### Hardware
+1. [Tested!] PC/Laptop: Ubuntu Xenial Xerus (16.04 LTS) -- ROS Kinetic Kame
+2. [Tested!] Raspberry Pi 4 8GB: Ubuntu Bionic Beaver (18.04 LTS) -- ROS Melodic Morenia
+3. Tello Drone:
+	1. Tello [Tested!] 
+	2. Tello Iron Man [Supposedly works also] 
+	3. Tello EDU [Tested!] 
+	
+### Software
+1. Ubuntu OS:
+	1. Download: 
+		1. https://releases.ubuntu.com/16.04/
+		2. https://releases.ubuntu.com/18.04/
+	2. Installation: 
+		1. https://ubuntu.com/tutorials/install-ubuntu-desktop-1604#1-overview
+		
+2. Robot Operating System (ROS)
+	1. Kinetic Kame:
+		1. http://wiki.ros.org/kinetic/Installation/Ubuntu
+	2. Melodic Morena:
+		1. http://wiki.ros.org/melodic/Installation/Ubuntu
+		
+## Cloning Required Repositories
 
-	**installation**
-	1. cd ~/catkin_ws/src
-	2. git clone https://github.com/KhairulIzwan/tello_driver.git
-	3. cd ~/catkin_ws
-	4. catkin_make
-
-2. AprilTag:
-	1. https://pypi.org/project/apriltag/
-
-	**installation**
-	1. python -m pip install apriltag
-
-3. Imutils:
-	1. https://pypi.org/project/imutils/
-
-	**installation**
-	1. python -m pip install imutils
-
+1. Clone **common_tello_application** package:
+```
+$ cd ~/catkin_ws/src
+$ git clone https://github.com/KhairulIzwan/common_tello_application.git
+$ cd ~/catkin_ws && rosdep install -y --from-paths src --ignore-src --rosdistro kinetic && catkin_make && rospack profile
+```
+2. Clone **tello_driver** package:
+```
+$ cd ~/catkin_ws/src
+$ git clone https://github.com/KhairulIzwan/tello_driver.git
+$ cd ~/catkin_ws && rosdep install -y --from-paths src --ignore-src --rosdistro kinetic && catkin_make && rospack profile
+```
+3. PIP:
+```
+$ cd ~
+$ wget https://bootstrap.pypa.io/get-pip.py
+$ sudo python get-pip.py
+```
+4. AprilTag:
+```
+$ python -m pip install apriltag
+```
+5. Imutils:
+```
+$ python -m pip install imutils
+```
 <!--# Important!-->
 <!--**Tello Driver**-->
 <!--1. Open tello_node.launch: rosed tello_driver tello_node.launch-->
