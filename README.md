@@ -971,3 +971,49 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 <!--    * direction: inbound-->
 <!--    * transport: TCPROS-->
 <!--```-->
+
+## Mode of Operation
+
+### Manual Operation [Tele-Operation]
+
+```
+[Teminal: One]
+$ roslaunch tello_driver tello_node.launch
+[Teminal: Two]
+$ rosrun common_tello_application camera_preview.py
+[Teminal: Three]
+$ rosrun common_tello_application teleop_key.py
+```
+
+### Autonomous Operation
+#### AprilTag3 Takeoff and Land
+```
+[Teminal: One]
+$ roslaunch tello_driver tello_node.launch
+[Teminal: Two]
+$ rosrun common_tello_application camera_apriltag_detection.py
+[Teminal: Three]
+$ rosrun common_tello_application camera_apriltag_takeoff_land.py
+```
+
+#### AprilTag3 Tracking
+```
+[Teminal: One]
+$ roslaunch tello_driver tello_node.launch
+[Teminal: Two]
+$ rosrun common_tello_application camera_apriltag_detection.py
+[Teminal: Three]
+$ rosrun common_tello_application camera_apriltag_takeoff_land.py
+[Teminal: Four]
+$ rosrun common_tello_application camera_apriltag_center.py
+[Teminal: Five]
+$ rosrun common_tello_application camera_apriltag_tracking.py
+```
+
+## Reference:
+1. Object detection with deep learning and OpenCV:
+	1. https://www.pyimagesearch.com/2017/09/11/object-detection-with-deep-learning-and-opencv/
+2. SSD: Single Shot MultiBox Detector: 
+	1. https://arxiv.org/abs/1512.02325
+3. MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications
+	1. https://arxiv.org/abs/1704.04861
