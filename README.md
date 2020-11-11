@@ -1019,6 +1019,10 @@ $ sudo apt-get install terminator
 	# Set ROS Editor
 	export EDITOR='gedit -w'
 	```
+	3. Save/Close bashrc file and source it again.
+	```
+	$ source ~/.bashrc
+	```
 	
 ### Manual Operation [Tele-Operation]
 
