@@ -106,12 +106,14 @@ A project to understand and controlling the **tello** with **ROS** and **Python*
 $ cd ~/catkin_ws/src
 $ git clone https://github.com/KhairulIzwan/common_tello_application.git
 $ cd ~/catkin_ws && rosdep install -y --from-paths src --ignore-src --rosdistro kinetic && catkin_make && rospack profile
+$ source ~/.bashrc
 ```
 2. Clone **tello_driver** package:
 ```
 $ cd ~/catkin_ws/src
 $ git clone https://github.com/KhairulIzwan/tello_driver.git
 $ cd ~/catkin_ws && rosdep install -y --from-paths src --ignore-src --rosdistro kinetic && catkin_make && rospack profile
+$ source ~/.bashrc
 ```
 3. PIP:
 ```
@@ -974,6 +976,50 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 
 ## Mode of Operation
 
+Before proceed:
+1. Install Terminator
+In Ubuntu, open terminal (Ctrl + Alt + t) and write the following commands:
+```
+$ sudo add-apt-repository ppa:gnome-terminator
+$ sudo apt-get update
+$ sudo apt-get install terminator
+```
+2. Edit bashrc file
+	1. Open/Edit file:
+	```
+	$ gedit ~/.bashrc
+	```
+	2. Add following at the end of the file
+	```
+	# Set ROS Kinetic
+	source /opt/ros/kinetic/setup.bash
+	source ~/catkin_ws/devel/setup.bash
+
+	# Set ROS Network (Tello)
+	export ROS_HOSTNAME=192.168.10.4
+	export ROS_MASTER_URI=http://192.168.10.4:11311
+
+	# Set ROS alias command
+	alias cw='cd ~/catkin_ws'
+	alias cs='cd ~/catkin_ws/src'
+	alias cm='cd ~/catkin_ws && rosdep install -y --from-paths src --ignore-src --rosdistro kinetic && catkin_make && rospack profile'
+
+	alias eb='gedit ~/.bashrc'
+	alias sb='source ~/.bashrc'
+
+	alias gs='git status'
+	alias gp='git pull'
+	alias ga='git add .'
+	NOW=$(date +"%m-%d-%Y-%T")
+	alias gc='git commit -m "Updated on $NOW"'
+	alias gpu='git push'
+	alias gu='gp && git add . && git commit -m "Updated on $NOW" && git push origin main'
+	#alias gu='gp && ga && gc && gpu'
+
+	# Set ROS Editor
+	export EDITOR='gedit -w'
+	```
+	
 ### Manual Operation [Tele-Operation]
 
 ```
