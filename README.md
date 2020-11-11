@@ -147,13 +147,14 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 ### tello_teleop_key.py
 - [x] Controlling the tello drone using keyboard
 
-Publications: 
+#### Publications: 
  * /rosout [rosgraph_msgs/Log]
  * /tello/cmd_vel [geometry_msgs/Twist]
  * /tello/land [std_msgs/Empty]
  * /tello/takeoff [std_msgs/Empty]
 
-Subscriptions: None
+#### Subscriptions: 
+ * None
 
 <!--```-->
 <!--Control Your Tello Drone!-->
