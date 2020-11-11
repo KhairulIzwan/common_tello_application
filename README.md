@@ -1011,9 +1011,11 @@ $ rosrun common_tello_application camera_apriltag_tracking.py
 ```
 
 ## Reference:
-1. Object detection with deep learning and OpenCV:
-	1. https://www.pyimagesearch.com/2017/09/11/object-detection-with-deep-learning-and-opencv/
-2. SSD: Single Shot MultiBox Detector: 
-	1. https://arxiv.org/abs/1512.02325
-3. MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications
-	1. https://arxiv.org/abs/1704.04861
+1. Pan/tilt face tracking with a Raspberry Pi and OpenCV
+	1. https://www.pyimagesearch.com/2019/04/01/pan-tilt-face-tracking-with-a-raspberry-pi-and-opencv/
+2. Find distance from camera to object/marker using Python and OpenCV
+	1. https://www.pyimagesearch.com/2015/01/19/find-distance-camera-objectmarker-using-python-opencv/
+3. Measuring size of objects in an image with OpenCV
+	1. https://www.pyimagesearch.com/2016/03/28/measuring-size-of-objects-in-an-image-with-opencv/
+4. Measuring distance between objects in an image with OpenCV
+	1. https://www.pyimagesearch.com/2016/04/04/measuring-distance-between-objects-in-an-image-with-opencv/
