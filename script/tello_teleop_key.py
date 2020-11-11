@@ -199,7 +199,7 @@ if __name__=="__main__":
 				if (key == '\x03'):
 					break
 
-			if status == 20 :
+			if status == 2 :
 				print(msg)
 				status = 0
 

@@ -1036,6 +1036,14 @@ $ rosrun common_tello_application teleop_key.py
 ```
 
 ### Autonomous Operation
+#### AprilTag3 Detection
+```
+[Teminal: One]
+$ roslaunch tello_driver tello_node.launch
+[Teminal: Two]
+$ rosrun common_tello_application camera_apriltag_detection.py
+```
+
 #### AprilTag3 Takeoff and Land
 ```
 [Teminal: One]
@@ -1058,6 +1066,20 @@ $ rosrun common_tello_application camera_apriltag_takeoff_land.py
 $ rosrun common_tello_application camera_apriltag_center.py
 [Teminal: Five]
 $ rosrun common_tello_application camera_apriltag_tracking.py
+```
+
+#### AprilTag3 Tracking Mission
+```
+[Teminal: One]
+$ roslaunch tello_driver tello_node.launch
+[Teminal: Two]
+$ rosrun common_tello_application camera_apriltag_detection.py
+[Teminal: Three]
+$ rosrun common_tello_application camera_apriltag_takeoff_land.py
+[Teminal: Four]
+$ rosrun common_tello_application camera_apriltag_center.py
+[Teminal: Five]
+$ rosrun common_tello_application camera_apriltag_tracking_mission.py
 ```
 
 ## Reference:

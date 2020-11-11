@@ -973,7 +973,7 @@ class CameraAprilTag:
 								rospy.logerr("ARRIVED...")
 
 #							self.telloCmdVel.linear.x = 0.0
-							self.telloCmdVel.linear.y = 0.0
+#							self.telloCmdVel.linear.y = 0.0
 #							self.telloCmdVel.linear.z = 0.0
 							
 							self.telloCmdVel.angular.x = 0.0
@@ -993,8 +993,8 @@ class CameraAprilTag:
 
 							self.telloCmdVel_pub.publish(self.telloCmdVel)
 
-							self.flip.data = 0
-							self.telloFlip_pub.publish(self.flip)
+#							self.flip.data = 0
+#							self.telloFlip_pub.publish(self.flip)
 
 							self.telloLand_pub.publish(self.land)
 							rospy.logwarn("LANDING...")
