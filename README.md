@@ -143,9 +143,17 @@ $ python -m pip install imutils
 ## AprilTag3 Marking
 _Please print out the apriltag marking provided inside the **etc/AprilTag3/** file name **Gates-AprilTag3.pdf**_
 
-## Scripts
+## Scripts/Nodes
 ### tello_teleop_key.py
 - [x] Controlling the tello drone using keyboard
+
+Publications: 
+ * /rosout [rosgraph_msgs/Log]
+ * /tello/cmd_vel [geometry_msgs/Twist]
+ * /tello/land [std_msgs/Empty]
+ * /tello/takeoff [std_msgs/Empty]
+
+Subscriptions: None
 
 <!--```-->
 <!--Control Your Tello Drone!-->
