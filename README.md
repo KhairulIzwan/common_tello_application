@@ -272,6 +272,19 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 ### camera_preview.py
 - [x] Preview an image stream from tello
 
+#### Publications: 
+ * /rosout [rosgraph_msgs/Log]
+
+#### Subscriptions: 
+ * /tello/image_raw/compressed [sensor_msgs/CompressedImage]
+ * /tello/imu [sensor_msgs/Imu]
+ * /tello/odom [nav_msgs/Odometry]
+ * /tello/status [tello_driver/TelloStatus]
+
+#### Services: 
+ * /camera_preview/get_loggers
+ * /camera_preview/set_logger_level
+
 <!--1. roslaunch tello_driver tello_node.launch-->
 
 <!-- ```-->
@@ -373,6 +386,41 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 
 ### camera_apriltag_detection.py
 - [x] Detect an AprilTag3 to get useful information
+
+#### Publications: 
+ * /isApriltag [std_msgs/Bool]
+ * /isApriltag/Center/X [common_tello_application/apriltagC]
+ * /isApriltag/Center/Y [common_tello_application/apriltagC]
+ * /isApriltag/Corner/X1 [common_tello_application/apriltagCorner]
+ * /isApriltag/Corner/X2 [common_tello_application/apriltagCorner]
+ * /isApriltag/Corner/X3 [common_tello_application/apriltagCorner]
+ * /isApriltag/Corner/X4 [common_tello_application/apriltagCorner]
+ * /isApriltag/Corner/Y1 [common_tello_application/apriltagCorner]
+ * /isApriltag/Corner/Y2 [common_tello_application/apriltagCorner]
+ * /isApriltag/Corner/Y3 [common_tello_application/apriltagCorner]
+ * /isApriltag/Corner/Y4 [common_tello_application/apriltagCorner]
+ * /isApriltag/Distance [common_tello_application/apriltagDistance]
+ * /isApriltag/Homography/H00 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H01 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H02 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H10 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H11 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H12 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H20 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H21 [common_tello_application/apriltagH]
+ * /isApriltag/Homography/H22 [common_tello_application/apriltagH]
+ * /isApriltag/N [common_tello_application/apriltagN]
+ * /rosout [rosgraph_msgs/Log]
+
+#### Subscriptions: 
+ * /tello/image_raw/compressed [sensor_msgs/CompressedImage]
+ * /tello/imu [sensor_msgs/Imu]
+ * /tello/odom [nav_msgs/Odometry]
+ * /tello/status [tello_driver/TelloStatus]
+
+#### Services: 
+ * /camera_apriltag_detection/get_loggers
+ * /camera_apriltag_detection/set_logger_level
 
 <!--1. roslaunch tello_driver tello_node.launch-->
 
@@ -498,6 +546,22 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 ### camera_apriltag_takeoff_land.py
 - [x] Autonomously takeoff and land based on apriltag 0: Land, 1: Takeoff
 
+#### Publications: 
+ * /rosout [rosgraph_msgs/Log]
+ * /tello/land [std_msgs/Empty]
+ * /tello/takeoff [std_msgs/Empty]
+
+#### Subscriptions: 
+ * /isApriltag [std_msgs/Bool]
+ * /isApriltag/N [common_tello_application/apriltagN]
+ * /tello/imu [sensor_msgs/Imu]
+ * /tello/odom [nav_msgs/Odometry]
+ * /tello/status [tello_driver/TelloStatus]
+
+#### Services: 
+ * /camera_apriltag_takeoff_land/get_loggers
+ * /camera_apriltag_takeoff_land/set_logger_level
+
 <!--1. roslaunch tello_driver tello_node.launch-->
 
 <!-- ```-->
@@ -614,6 +678,24 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 
 ### camera_apriltag_center.py
 - [x] Detect, recognize apriltag and publish the center
+
+Publications: 
+ * /isApriltag/objCoord [common_tello_application/objCenter]
+ * /rosout [rosgraph_msgs/Log]
+
+Subscriptions: 
+ * /isApriltag [std_msgs/Bool]
+ * /isApriltag/Center/X [common_tello_application/apriltagC]
+ * /isApriltag/Center/Y [common_tello_application/apriltagC]
+ * /isApriltag/N [common_tello_application/apriltagN]
+ * /tello/camera/camera_info [sensor_msgs/CameraInfo]
+ * /tello/imu [sensor_msgs/Imu]
+ * /tello/odom [nav_msgs/Odometry]
+ * /tello/status [tello_driver/TelloStatus]
+
+Services: 
+ * /camera_apriltag_center/get_loggers
+ * /camera_apriltag_center/set_logger_level
 
 <!--1. roslaunch tello_driver tello_node.launch-->
 
@@ -740,6 +822,23 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 ### camera_apriltag_tracking.py
 - [x] Tracking the detected apriltag; keep the apriltag on center of image. Applying PID controller.
 
+### Publications: 
+ * /rosout [rosgraph_msgs/Log]
+ * /tello/cmd_vel [geometry_msgs/Twist]
+
+### Subscriptions: 
+ * /isApriltag [std_msgs/Bool]
+ * /isApriltag/N [common_tello_application/apriltagN]
+ * /isApriltag/objCoord [common_tello_application/objCenter]
+ * /tello/camera/camera_info [sensor_msgs/CameraInfo]
+ * /tello/imu [sensor_msgs/Imu]
+ * /tello/odom [nav_msgs/Odometry]
+ * /tello/status [tello_driver/TelloStatus]
+
+### Services: 
+ * /camera_apriltag_tracking/get_loggers
+ * /camera_apriltag_tracking/set_logger_level
+ 
 <!--1. roslaunch tello_driver tello_node.launch-->
 
 <!-- ```-->
@@ -983,6 +1082,31 @@ _Please print out the apriltag marking provided inside the **etc/AprilTag3/** fi
 <!--    * transport: TCPROS-->
 <!--```-->
 
+### camera_apriltag_tracking_mission.py
+- [x] Tracking the detected apriltag; keep the apriltag on center of image and come towards the apriltag. Applying PID controller.
+
+#### Publications: 
+ * /rosout [rosgraph_msgs/Log]
+ * /tello/cmd_vel [geometry_msgs/Twist]
+ * /tello/flip [std_msgs/UInt8]
+ * /tello/land [std_msgs/Empty]
+
+#### Subscriptions: 
+ * /isApriltag [std_msgs/Bool]
+ * /isApriltag/Distance [common_tello_application/apriltagDistance]
+ * /isApriltag/Homography/Mat [unknown type]
+ * /isApriltag/N [common_tello_application/apriltagN]
+ * /isApriltag/objCoord [common_tello_application/objCenter]
+ * /tello/camera/camera_info [sensor_msgs/CameraInfo]
+ * /tello/imu [sensor_msgs/Imu]
+ * /tello/odom [nav_msgs/Odometry]
+ * /tello/status [tello_driver/TelloStatus]
+
+#### Services: 
+ * /camera_apriltag_tracking/get_loggers
+ * /camera_apriltag_tracking/set_logger_level
+
+ 
 ## Mode of Operation
 
 Before proceed:
