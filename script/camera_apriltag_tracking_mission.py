@@ -59,7 +59,7 @@ class CameraAprilTag:
 
 		self.isApriltag_received = False
 
-		self.state = True
+		self.stateTwo = False
 		self.stateFlip = False
 		self.stateLand = False
 
@@ -69,29 +69,29 @@ class CameraAprilTag:
 		self.MAX_ANG_VEL = 1.0
 
 		# set PID values for pan
-		self.panP = 2
+		self.panP = 3
 		self.panI = 0
 		self.panD = 0.001
 
 		# set PID values for tilt
-		self.tiltP = 2
+		self.tiltP = 3
 		self.tiltI = 0
 		self.tiltD = 0.001
 
 		# set PID values for yaw
-		self.yawP = 2
+		self.yawP = 3
 		self.yawI = 0
 		self.yawD = 0.001
 
 		# set PID values for distance
-		self.distanceP = 2
+		self.distanceP = 3
 		self.distanceI = 0
 		self.distanceD = 0.001
 
 		# set PID values for height_m
 		self.heightP = 3
 		self.heightI = 0
-		self.heightD = 0
+		self.heightD = 0.001
 
 		# create a PID and initialize it
 		self.panPID = PID(self.panP, self.panI, self.panD)
@@ -860,16 +860,14 @@ class CameraAprilTag:
 				# is AprilTag3 detected listed? : False
 				if not self.isApriltagN:
 #					pass
-					if self.state == False:
-						self.telloCmdVel.linear.x = 0.0
-						self.telloCmdVel.linear.y = 0.0
-						self.telloCmdVel.linear.z = 0.0
+					if self.stateLand == True:
+						self.telloLand_pub.publish(self.land)
+						rospy.logwarn("LANDING...")
 					
-						self.telloCmdVel.angular.x = 0.0
-						self.telloCmdVel.angular.x = 0.0
-						self.telloCmdVel.angular.z = 0.0
-
-						self.telloCmdVel_pub.publish(self.telloCmdVel)
+						r.sleep()
+					
+						self.stateTwo = False
+						self.stateLand = False
 
 					else:
 						pass
@@ -890,7 +888,7 @@ class CameraAprilTag:
 
 					# is AprilTag3 detected listed it NOT 0 : Takeoff or 1 : Land
 					else:
-						if self.isApriltagN[0] == 3 and self.state == True:
+						if self.isApriltagN[0] == 2 and self.stateTwo == False and self.stateLand == False:
 							# Calculate the PID error
 							self.cbPIDerrCenter()
 
@@ -969,7 +967,7 @@ class CameraAprilTag:
 								self.telloCmdVel.linear.y = distanceSpeed
 							else:
 								self.telloCmdVel.linear.y = 0
-								self.state = False
+								self.stateTwo = True
 								rospy.logerr("ARRIVED...")
 
 #							self.telloCmdVel.linear.x = 0.0
@@ -982,7 +980,7 @@ class CameraAprilTag:
 
 							self.telloCmdVel_pub.publish(self.telloCmdVel)
 
-						elif self.state == False:
+						elif self.stateTwo == True:
 							self.telloCmdVel.linear.x = 0.0
 							self.telloCmdVel.linear.y = 0.0
 							self.telloCmdVel.linear.z = 0.0
@@ -990,15 +988,25 @@ class CameraAprilTag:
 							self.telloCmdVel.angular.x = 0.0
 							self.telloCmdVel.angular.y = 0.0
 							self.telloCmdVel.angular.z = 0.0
-
+							
 							self.telloCmdVel_pub.publish(self.telloCmdVel)
-
-#							self.flip.data = 0
-#							self.telloFlip_pub.publish(self.flip)
-
+							
+							self.flip.data = 0
+							self.telloFlip_pub.publish(self.flip)
+							
+							time.sleep(3)
+							
+							self.stateTwo = False
+							self.stateLand = True
+							
+						elif self.stateLand == True:
 							self.telloLand_pub.publish(self.land)
 							rospy.logwarn("LANDING...")
-
+							
+							time.sleep(3)
+							
+							self.stateTwo = False
+							self.stateLand = False
 						else:
 							self.telloCmdVel.linear.x = 0.0
 							self.telloCmdVel.linear.y = 0.0
@@ -1007,12 +1015,23 @@ class CameraAprilTag:
 							self.telloCmdVel.angular.x = 0.0
 							self.telloCmdVel.angular.y = 0.0
 							self.telloCmdVel.angular.z = 0.0
-
+							
 							self.telloCmdVel_pub.publish(self.telloCmdVel)
-
+							
 			# is AprilTag3 detected? : False
 			else:
-				pass
+#				pass
+				if self.stateLand == True:
+					time.sleep(3)
+					
+					self.telloLand_pub.publish(self.land)
+					rospy.logwarn("LANDING...")
+					
+					self.stateTwo = False
+					self.stateLand = False
+
+				else:
+					pass
 
 		# is AprilTag3 recieved? : False
 		else:

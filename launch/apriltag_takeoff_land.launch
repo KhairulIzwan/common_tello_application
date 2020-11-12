@@ -1,0 +1,10 @@
+<launch>
+
+	<!-- AprilTag3 TakeOff Land -->
+	<node	pkg="common_tello_application" 
+		name="camera_apriltag_takeoff_land" 
+		type="camera_apriltag_takeoff_land.py"> 
+		<!-- output="screen"> -->
+	</node>
+
+</launch>
