@@ -1,0 +1,10 @@
+<launch>
+
+	<!-- Tello Pose -->
+	<node	pkg="common_tello_application" 
+		name="tello_pose" 
+		type="tello_pose.py"> 
+		<!-- output="screen"> -->
+	</node>
+	
+</launch>

@@ -64,6 +64,7 @@ find_package(catkin REQUIRED COMPONENTS
    FloatArray.msg
    arrayHomo.msg
    arrayCorner.msg
+   Pose.msg
  )
 
 ## Generate services in the 'srv' folder
